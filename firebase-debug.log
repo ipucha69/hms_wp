@@ -1,0 +1,21 @@
+[debug] [2024-01-10T12:25:12.937Z] ----------------------------------------------------------------------
+[debug] [2024-01-10T12:25:12.955Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\TM\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions
+[debug] [2024-01-10T12:25:12.956Z] CLI Version:   13.0.3
+[debug] [2024-01-10T12:25:12.956Z] Platform:      win32
+[debug] [2024-01-10T12:25:12.957Z] Node Version:  v18.15.0
+[debug] [2024-01-10T12:25:13.114Z] Time:          Wed Jan 10 2024 15:25:12 GMT+0300 (East Africa Time)
+[debug] [2024-01-10T12:25:13.115Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-01-10T12:25:13.147Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2024-01-10T12:25:13.455Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-01-10T12:25:13.456Z] > authorizing via signed-in user (tjohanseny99@gmail.com)
+[debug] [2024-01-10T12:25:13.457Z] [iam] checking project fuel-flow-manager for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2024-01-10T12:25:13.458Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/fuel-flow-manager:testIamPermissions [none]
+[debug] [2024-01-10T12:25:13.459Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/fuel-flow-manager:testIamPermissions x-goog-quota-user=projects/fuel-flow-manager
+[debug] [2024-01-10T12:25:13.459Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/fuel-flow-manager:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-01-10T12:25:14.123Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2024-01-10T12:25:14.125Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2024-01-10T12:25:15.206Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/fuel-flow-manager:testIamPermissions 200
+[debug] [2024-01-10T12:25:15.207Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/fuel-flow-manager:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-01-10T12:25:15.208Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/fuel-flow-manager/serviceAccounts/fuel-flow-manager@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2024-01-10T12:25:15.209Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/fuel-flow-manager/serviceAccounts/fuel-flow-manager@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
