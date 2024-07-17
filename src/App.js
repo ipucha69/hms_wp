@@ -28,7 +28,7 @@ const App = () => {
                 dispatch(changeUser(true));
 
             } else {
-                dispatch(changeUser(true));
+                dispatch(changeUser(false));
                 console.log('There is no user so far');
             }
         });

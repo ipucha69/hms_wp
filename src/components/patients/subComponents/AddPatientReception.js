@@ -5,17 +5,19 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { Button } from "@mui/material";
+import { Button, FormControl, InputLabel } from "@mui/material";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { colors } from "../../../assets/utils/colors";
 
 const style = {
     position: "absolute",
-    top: "45%",
+    top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "75%",
+    maxHeight: "80vh",
+    overflowY: "auto",
     bgcolor: "background.paper",
     p: 4,
 };
@@ -164,39 +166,45 @@ const AddPatientReception = () => {
                                         />
                                     </div>
                                     <div className="w-full py-2 flex justify-center">
-                                        <Select
-                                            value={gender}
-                                            onChange={(e) => setGender(e.target.value)}
-                                            label="Gender"
-                                            id="outlined-gender"
-                                            size="small"
-                                            variant="outlined"
-                                            className="w-[82%]"
-                                        >
-                                            <MenuItem value="">
-                                                <em>None</em>
-                                            </MenuItem>
-                                            <MenuItem value="Male">Male</MenuItem>
-                                            <MenuItem value="Female">Female</MenuItem>
-                                        </Select>
+                                        <FormControl variant="outlined" size="small" fullWidth>
+                                        <InputLabel id="gender-label">Gender</InputLabel>
+                                            <Select
+                                                value={gender}
+                                                onChange={(e) => setGender(e.target.value)}
+                                                label="Gender"
+                                                id="outlined-gender"
+                                                size="small"
+                                                variant="outlined"
+                                                className="w-[82%]"
+                                            >
+                                                <MenuItem value="">
+                                                    <em>None</em>
+                                                </MenuItem>
+                                                <MenuItem value="Male">Male</MenuItem>
+                                                <MenuItem value="Female">Female</MenuItem>
+                                            </Select>
+                                        </FormControl>
                                     </div>
                                     <div className="w-full py-2 flex justify-center">
-                                        <Select
-                                            value={status}
-                                            onChange={(e) => setStatus(e.target.value)}
-                                            label="Status"
-                                            id="outlined-status"
-                                            size="small"
-                                            variant="outlined"
-                                            className="w-[82%]"
-                                        >
-                                            <MenuItem value="">
-                                                <em>None</em>
-                                            </MenuItem>
-                                            <MenuItem value="Married">Married</MenuItem>
-                                            <MenuItem value="Single">Single</MenuItem>
-                                            <MenuItem value="Divorced">Divorced</MenuItem>
-                                        </Select>
+                                        <FormControl variant="outlined" size="small" fullWidth>
+                                        <InputLabel id="status-label">Status</InputLabel>
+                                            <Select
+                                                value={status}
+                                                onChange={(e) => setStatus(e.target.value)}
+                                                id="outlined-status"
+                                                label="Status"
+                                                size="small"
+                                                variant="outlined"
+                                                className="w-[82%]"
+                                            >
+                                                <MenuItem value="">
+                                                    <em>None</em>
+                                                </MenuItem>
+                                                <MenuItem value="Married">Married</MenuItem>
+                                                <MenuItem value="Single">Single</MenuItem>
+                                                <MenuItem value="Divorced">Divorced</MenuItem>
+                                            </Select>
+                                        </FormControl>
                                     </div>
                                 </div>
                                 <div className="flex flex-row gap-8 justify-end space-x-4 items-end py-4 px-2">
@@ -322,22 +330,24 @@ const AddPatientReception = () => {
                                     </div>
                                     <div></div>
                                     <div className="w-full py-2 flex justify-center">
-                                        <Select
-                                            value={kin_status}
-                                            onChange={(e) => setKin_Status(e.target.value)}
-                                            label="Status"
-                                            id="outlined-kin-status"
-                                            size="small"
-                                            variant="outlined"
-                                            className="w-[52%]"
-                                        >
-                                            <MenuItem value="">
-                                                <em>None</em>
-                                            </MenuItem>
-                                            <MenuItem value="Married">Married</MenuItem>
-                                            <MenuItem value="Single">Single</MenuItem>
-                                            <MenuItem value="Divorced">Divorced</MenuItem>
-                                        </Select>
+                                        <FormControl variant="outlined" size="small" fullWidth>
+                                            <InputLabel id="kin-status-label">Kin Status</InputLabel>
+                                            <Select
+                                                labelId="kin-status-label"
+                                                id="outlined-kin-status"
+                                                value={kin_status}
+                                                onChange={(e) => setKin_Status(e.target.value)}
+                                                label="Kin Status"
+                                                className="w-[52%]"
+                                            >
+                                                <MenuItem value="">
+                                                    <em>None</em>
+                                                </MenuItem>
+                                                <MenuItem value="Married">Married</MenuItem>
+                                                <MenuItem value="Single">Single</MenuItem>
+                                                <MenuItem value="Divorced">Divorced</MenuItem>
+                                            </Select>
+                                        </FormControl>
                                     </div>
                                 </div>
                             </div>

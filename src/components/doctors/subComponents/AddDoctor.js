@@ -10,7 +10,7 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { Button } from "@mui/material";
+import { Button, FormControl, InputLabel } from "@mui/material";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { colors } from "../../../assets/utils/colors";
@@ -211,22 +211,25 @@ const AddDoctor = () => {
                                 />
                             </div>
                             <div className="w-full py-2 flex justify-center">
-                                <Select
-                                    labelId="specialization-label"
-                                    id="specialization-select"
-                                    value={specialization}
-                                    label="Specialization"
-                                    size="small"
-                                    variant="outlined"
-                                    className="w-[82%]"
-                                    onChange={(e) => setSpecialization(e.target.value)}
-                                >
-                                    {specializations.map((spec) => (
-                                        <MenuItem key={spec} value={spec}>
-                                            {spec}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
+                                <FormControl variant="outlined" size="small" fullWidth>
+                                <InputLabel id="specialization-label">Specialization</InputLabel>
+                                    <Select
+                                        labelId="specialization-label"
+                                        id="specialization-select"
+                                        value={specialization}
+                                        label="Specialization"
+                                        size="small"
+                                        variant="outlined"
+                                        className="w-[82%]"
+                                        onChange={(e) => setSpecialization(e.target.value)}
+                                    >
+                                        {specializations.map((spec) => (
+                                            <MenuItem key={spec} value={spec}>
+                                                {spec}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
                             </div>
                             <div className="w-full py-2 flex justify-center">
                                 <TextField

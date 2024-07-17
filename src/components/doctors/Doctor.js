@@ -67,28 +67,28 @@ const Doctor = () => {
 
     useEffect(() => {
         const getDoctors = async () => {
-        let patientsArray = [];
+            let patientsArray = [];
 
-        setPageLoading(true);
+            setPageLoading(true);
 
-        const q = query(
-            collection(db, "userBucket"),
-        );
+            const q = query(
+                collection(db, "userBucket"),
+            );
 
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            //set data
-            const data = doc.data();
-            patientsArray.push(data);
-        });
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                //set data
+                const data = doc.data();
+                patientsArray.push(data);
+            });
 
-        if (patientsArray.length > 0) {
-            dispatch(addDoctors(patientsArray));
-            setPageLoading(false);
-        } else {
-            dispatch(addDoctors([]));
-            setPageLoading(false);
-        }
+            if (patientsArray.length > 0) {
+                dispatch(addDoctors(patientsArray));
+                setPageLoading(false);
+            } else {
+                dispatch(addDoctors([]));
+                setPageLoading(false);
+            }
         };
 
         getDoctors();
