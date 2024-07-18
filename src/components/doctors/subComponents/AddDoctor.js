@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, getFirestore } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db, auth } from "./../../../App";
 
 import Box from "@mui/material/Box";
@@ -11,7 +11,7 @@ import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, FormControl, InputLabel } from "@mui/material";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { colors } from "../../../assets/utils/colors";
 
@@ -53,8 +53,6 @@ const AddDoctor = () => {
     const [specialization, setSpecialization] = useState("");
     const [availability, setAvailability] = useState("");
     const [loading, setLoading] = useState(false);
-
-    const dispatch = useDispatch();
 
     const userRegistration = async (e) => {
         e.preventDefault();
@@ -211,7 +209,7 @@ const AddDoctor = () => {
                                 />
                             </div>
                             <div className="w-full py-2 flex justify-center">
-                                <FormControl variant="outlined" size="small" fullWidth>
+                                <FormControl variant="outlined" size="small" className="w-[82%]">
                                 <InputLabel id="specialization-label">Specialization</InputLabel>
                                     <Select
                                         labelId="specialization-label"
@@ -220,7 +218,7 @@ const AddDoctor = () => {
                                         label="Specialization"
                                         size="small"
                                         variant="outlined"
-                                        className="w-[82%]"
+                                        className="w-[100%]"
                                         onChange={(e) => setSpecialization(e.target.value)}
                                     >
                                         {specializations.map((spec) => (

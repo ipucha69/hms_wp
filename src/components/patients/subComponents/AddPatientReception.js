@@ -16,7 +16,7 @@ const style = {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "75%",
-    maxHeight: "80vh",
+    maxHeight: "90vh",
     overflowY: "auto",
     bgcolor: "background.paper",
     p: 4,
@@ -166,7 +166,7 @@ const AddPatientReception = () => {
                                         />
                                     </div>
                                     <div className="w-full py-2 flex justify-center">
-                                        <FormControl variant="outlined" size="small" fullWidth>
+                                        <FormControl variant="outlined" size="small" className="w-[82%]">
                                         <InputLabel id="gender-label">Gender</InputLabel>
                                             <Select
                                                 value={gender}
@@ -175,7 +175,7 @@ const AddPatientReception = () => {
                                                 id="outlined-gender"
                                                 size="small"
                                                 variant="outlined"
-                                                className="w-[82%]"
+                                                className="w-[100%]"
                                             >
                                                 <MenuItem value="">
                                                     <em>None</em>
@@ -186,7 +186,7 @@ const AddPatientReception = () => {
                                         </FormControl>
                                     </div>
                                     <div className="w-full py-2 flex justify-center">
-                                        <FormControl variant="outlined" size="small" fullWidth>
+                                        <FormControl variant="outlined" size="small" className="w-[82%]">
                                         <InputLabel id="status-label">Status</InputLabel>
                                             <Select
                                                 value={status}
@@ -195,7 +195,7 @@ const AddPatientReception = () => {
                                                 label="Status"
                                                 size="small"
                                                 variant="outlined"
-                                                className="w-[82%]"
+                                                className="w-[100%]"
                                             >
                                                 <MenuItem value="">
                                                     <em>None</em>
@@ -316,21 +316,21 @@ const AddPatientReception = () => {
                                         />
                                     </div>
                                 </div>
-                                <div className="flex flex-row gap-8 justify-end space-x-4 items-end py-4 px-4">
+                                <div className="flex flex-row gap-8 justify-end space-x-4 items-end py-4">
                                     <div className="w-full py-2 flex justify-center">
                                         <TextField
                                             size="small"
                                             id="outlined-relation-ship"
                                             label="Relationship"
                                             variant="outlined"
-                                            className="w-[52%]"
+                                            className="w-[85%]"
                                             value={relationship}
                                             onChange={(e) => setRelationship(e.target.value)}
                                         />
                                     </div>
                                     <div></div>
                                     <div className="w-full py-2 flex justify-center">
-                                        <FormControl variant="outlined" size="small" fullWidth>
+                                        <FormControl variant="outlined" size="small" className="w-[85%]">
                                             <InputLabel id="kin-status-label">Kin Status</InputLabel>
                                             <Select
                                                 labelId="kin-status-label"
@@ -338,7 +338,7 @@ const AddPatientReception = () => {
                                                 value={kin_status}
                                                 onChange={(e) => setKin_Status(e.target.value)}
                                                 label="Kin Status"
-                                                className="w-[52%]"
+                                                className="w-[100%]"
                                             >
                                                 <MenuItem value="">
                                                     <em>None</em>
@@ -351,15 +351,15 @@ const AddPatientReception = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="my-2 space-y-1">
-                                <div className="flex flex-row gap-8 justify-end space-x-4 items-end py-4 px-2">
+                            <div className="my-4 space-y-1">
+                                <div className="flex flex-row gap-10 justify-end space-x-4 items-end py-4)">
                                     <div className="w-full py-2 flex justify-center">
                                         <TextField
                                             size="small"
                                             id="outlined-dep-reception"
                                             label="Department for reception"
                                             variant="outlined"
-                                            className="w-[52%]"
+                                            className="w-[85%]"
                                             value={reception_department}
                                             onChange={(e) => setRecep_department(e.target.value)}
                                         />
@@ -370,7 +370,7 @@ const AddPatientReception = () => {
                                             id="outlined-sponsor"
                                             label="Sponsorship"
                                             variant="outlined"
-                                            className="w-[52%]"
+                                            className="w-[85%]"
                                             value={sponsorship}
                                             onChange={(e) => setSponsorship(e.target.value)}
                                         />
