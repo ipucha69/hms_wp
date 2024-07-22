@@ -115,7 +115,10 @@ const AddPatientReception = () => {
             >
                 <Box sx={style} className="rounded-md">
                     <div>
-                        <h3 className="text-center text-xl py-4">Add New Patient</h3>
+                        <div className="flex flex-row gap-8 justify-between px-12">
+                            <div><h3 className="flex justify-center text-center font-bold mx-0 text-xl py-4">RECEPTION</h3></div>
+                            <div className="w-40 h-45 flex justify-center bg-gray-500 py-4 aspect-square"><p className="text-center text-white">Profile Picture</p></div>
+                        </div>
                         <div className="space-y-4 text-center divide-y divide-gray-250">
                             <div className="my-2 space-y-1">
                                 <div className="flex flex-row gap-8 justify-end items-end py-4 px-2">
@@ -158,6 +161,7 @@ const AddPatientReception = () => {
                                         <TextField
                                             id="outlined-dob"
                                             size="small"
+                                            // label="Date of Birth"
                                             variant="outlined"
                                             className="w-[82%]"
                                             value={dob}

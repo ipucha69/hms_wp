@@ -7,6 +7,7 @@ import { Space, Input, Table} from "antd";
 import Description from "../common/Description";
 import { selectPatients, addPatients, addFilteredPatients, selectFilteredPatients } from "../../reducers/patientSlice";
 import AddPatientReception from "./subComponents/AddPatientReception";
+import AddPatientInfo from "./subComponents/AddPatientInfo";
 
 
 const { Search } = Input;
@@ -141,6 +142,7 @@ const Patient = () => {
                 </Space.Compact>
             </div>
             <AddPatientReception />
+            <AddPatientInfo />
         </div>
         <div className="pt-4">
             {filters ? (
