@@ -110,7 +110,7 @@ const AddPatientInfo = () => {
             >
                 <Box sx={style} className="rounded-md">
                     <div>
-                        <h3 className="font-bold mx-10 text-xl py-4">PATIENT HISTORY</h3>
+                        <h3 className="font-bold mx-12 text-xl py-4">PATIENT HISTORY</h3>
                         <div className="space-y-4 text-center divide-y divide-gray-250">
                             <div className="my-2 space-y-1">
                                 <div className="flex flex-row gap-8 justify-end items-end py-4 px-2">
