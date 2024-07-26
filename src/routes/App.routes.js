@@ -13,6 +13,8 @@ import Patient from "../components/patients/Patient";
 import Bed from "../components/beds/Bed";
 import Message from "../components/messages/Message";
 import HospitalActivities from "../components/hospitals/HospitalActivities";
+import PatientQueue from "../components/patients/subComponents/PatientQueue";
+import VisitPatient from "../components/patients/subComponents/VisitPatient";
 
 
 const LoginElement = () => <Login />;
@@ -34,6 +36,18 @@ const PatientElement = () => (
         <Patient />
     </AppLayout>
 );
+
+const PatientQueueElement = () => (
+    <AppLayout>
+        <PatientQueue />
+    </AppLayout>
+)
+
+const PatientQueueVisitElement = () => (
+    <AppLayout>
+        <VisitPatient />
+    </AppLayout>
+)
 
 const ScheduleElement = () => (
     <AppLayout>
@@ -96,7 +110,11 @@ const App = () => {
                 <Route>
                     <Route path="/" element={<DashboardElement />} />
                     <Route path="/doctor" element={<DoctorElement />} />
+
                     <Route path="/patients" element={<PatientElement />} />
+                    <Route path="/patients-queue" element={<PatientQueueElement />} />
+                    <Route path="/patients-queue/:patientID" element={<PatientQueueVisitElement />} />
+
                     <Route path="/schedule" element={<ScheduleElement />} />
                     <Route path="/appointment" element={<AppointmentElement />} />
                     <Route path="/prescription" element={<PrescriptionElement />} />

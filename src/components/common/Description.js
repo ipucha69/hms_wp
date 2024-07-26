@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import moment from "moment";
 import { IconButton } from "@mui/material";
 import { RemoveRedEye } from "@mui/icons-material";
 import { Modal } from "antd";

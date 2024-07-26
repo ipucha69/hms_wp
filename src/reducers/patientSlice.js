@@ -3,7 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     patients: [],
-    filteredPatients: []
+    patient: {},
+    patientsQueue: [],
+    filteredPatients: [],
+    filteredPatientsQueue: []
 };
 
 const patientSlice = createSlice({
@@ -13,8 +16,17 @@ const patientSlice = createSlice({
         addPatients(state, action) { 
             state.patients = action.payload;
         },
+        addPatientDetails(state, action) {
+            state.patient = action.payload;
+        },
+        addPatientsQueue(state, action) { 
+            state.patientsQueue = action.payload;
+        },
         addFilteredPatients(state, action) {
             state.filteredPatients = action.payload;
+        },
+        addFilteredPatientsQueue(state, action) {
+            state.filteredPatientsQueue = action.payload
         }
     },
 });
@@ -22,10 +34,16 @@ const patientSlice = createSlice({
 
 export const { 
     addPatients,
-    addFilteredPatients
+    addPatientDetails,
+    addPatientsQueue,
+    addFilteredPatients,
+    addFilteredPatientsQueue
 } = patientSlice.actions;
 
 export const selectPatients = (state) => state.patient.patients;
+export const selectPatientDetails = (state) => state.patient.patient;
+export const selectPatientsQueue = (state) => state.patient.patientsQueue;
 export const selectFilteredPatients = (state) => state.patient.filteredPatients;
+export const selectFilteredPatientsQueue = (state) => state.patient.filteredPatientsQueue;
 
 export default patientSlice.reducer;

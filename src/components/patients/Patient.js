@@ -4,10 +4,13 @@ import { collection, getDocs, query } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { Space, Input, Table} from "antd";
 
-import Description from "../common/Description";
 import { selectPatients, addPatients, addFilteredPatients, selectFilteredPatients } from "../../reducers/patientSlice";
 import AddPatientReception from "./subComponents/AddPatientReception";
 import AddPatientInfo from "./subComponents/AddPatientInfo";
+import AssignDoctorToPatient from "./subComponents/AssignDoctorToPatient";
+import EditPatient from "./subComponents/EditPatient";
+import { useNavigate } from "react-router-dom";
+import { Queue } from "@mui/icons-material";
 
 
 const { Search } = Input;
@@ -20,9 +23,16 @@ const columns = [
         render: (text) => <p>{text}</p>,
     },
     {
+        title: "Patient ID",
+        dataIndex: "patientID",
+        key: "patientID",
+        render: (text) => <p>{text}</p>,
+    },
+    {
         title: "Patient Name",
-        dataIndex: "name",
+        dataIndex: ["firstName", "middleName", "lastName"],
         key: "name",
+        render: (_, record) => <p>{record.firstName} {record.middleName} {record.lastName}</p>,
     },
     {
         title: "Email",
@@ -31,18 +41,52 @@ const columns = [
         render: (text) => <p>{text}</p>,
     },
     {
-        title: "Description",
+        title: "Phone",
+        dataIndex: "phone",
+        key: "phone",
+        render: (text) => <p>{text}</p>,
+    },
+    {
+        title: "Age",
+        dataIndex: "age",
+        key: "age",
+        render: (text) => <p>{text}</p>,
+    },
+    {
+        title: "Address",
+        dataIndex: "address",
+        key: "address",
+        render: (text) => <p>{text}</p>,
+    },
+    {
+        title: "Blood Group",
+        dataIndex: "bloodGroup",
+        key: "bloodGroup",
+        render: (text) => <p>{text}</p>,
+    },
+    {
+        title: "Patient Queue",
         key: "view",
-        render: (_, manager) => (
+        render: (_, patient) => (
         <p className="flex flex-row gap-1 justify-start">
-            <Description data={manager} title={"Patient Descriptions"} />
+            <AssignDoctorToPatient patient={patient} title={"Assign Doctor To Patient"} />
         </p>
         ),
-    }
+    },
+    {
+        title: "Actions",
+        key: "action",
+        render: (_, patient) => (
+            <div className="flex flex-row gap-1 justify-start">
+                <EditPatient patient={patient} />
+            </div>
+        ),
+    },
 ];
 
 const Patient = () => {
   const dispatch = useDispatch();
+    const navigate = useNavigate();
 
   const [pageLoading, setPageLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -50,28 +94,31 @@ const Patient = () => {
 
     useEffect(() => {
         const getPatients = async () => {
-        let patientsArray = [];
+            let patientsArray = [];
 
-        setPageLoading(true);
+            setPageLoading(true);
 
-        const q = query(
-            collection(db, "patientsBucket"),
-        );
+            const q = query(
+                collection(db, "patientsBucket"),
+            );
 
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            //set data
-            const data = doc.data();
-            patientsArray.push(data);
-        });
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                //set data
+                const data = doc.data();
+                patientsArray.push(data);
+            });
 
-        if (patientsArray.length > 0) {
-            dispatch(addPatients(patientsArray));
-            setPageLoading(false);
-        } else {
-            dispatch(addPatients([]));
-            setPageLoading(false);
-        }
+            if (patientsArray.length > 0) {
+                dispatch(addPatients(patientsArray));
+                setPageLoading(false);
+            } else {
+                dispatch(addPatients([
+                    { firstName: 'Rashid', middleName: 'Seif', lastName: 'Iddi', email: 'ipucha69@gmail.com', age: 28, patientID: 'cc1', phone: '0679329802', gender: 'M', address: 'Kawe-Dar-es-Salaam', bloodGroup: 'A+'},
+                    { firstName: 'Rachel', middleName: 'Joseph', lastName: 'Hezron', email: 'hezronrachel100@gmail.com', age: 25, patientID: 'cc2', phone: '0788858654', gender: 'F', address: 'Kinondoni-Dar-es-Salaam', bloodGroup: 'O'}
+                ]));
+                setPageLoading(false);
+            }
         };
 
         getPatients();
@@ -89,7 +136,7 @@ const Patient = () => {
         if (searchText) {
             const text = searchText.toLocaleLowerCase();
             const searchedPatients = patients.filter((patient) => {
-                return patient?.name?.toLocaleLowerCase()?.includes(text);
+                return patient?.patientID?.toLocaleLowerCase()?.includes(text);
             });
     
             // Update state with filtered patients
@@ -119,6 +166,11 @@ const Patient = () => {
       .slice()
       .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
       .map((patient, index) => ({ ...patient, key: index + 1 }));
+
+
+    const handleQueuePatient = () => {
+        navigate('/patients-queue');
+    }
   
 
     return (
@@ -134,7 +186,7 @@ const Patient = () => {
             <div>
                 <Space.Compact size="large">
                     <Search
-                        placeholder="Search patient name"
+                        placeholder="Search patientID"
                         allowClear
                         onChange={(e) => handleSearchText(e.target.value)}
                         onSearch={() => handleOnSearchChange()}
@@ -143,6 +195,13 @@ const Patient = () => {
             </div>
             <AddPatientReception />
             <AddPatientInfo />
+            {/* <PatientQueue /> */}
+            <div onClick={() => handleQueuePatient()}
+                className="h-10 w-56 bg-primaryColor cursor-pointer rounded-xl flex flex-row gap-1 justify-center text-white"
+            >
+                <Queue className="mt-2 py-0.5" />{" "}
+                <p className="py-2">Patients Queue</p>
+            </div>
         </div>
         <div className="pt-4">
             {filters ? (

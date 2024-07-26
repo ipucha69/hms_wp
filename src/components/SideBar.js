@@ -131,6 +131,44 @@ const SideBar = ({ handleDrawerToggle }) => {
         }
     ];
 
+    const doctorLinks = [
+        {
+            id: 1,
+            name: "Dashboard",
+            icon: <HomeOutlined className="icon" />,
+            url: "/",
+            tooltip: "Dashboard",
+        },
+        {
+            id: 3,
+            name: "Patients",
+            icon: <PersonOff className="icon" />,
+            url: "/patients",
+            tooltip: "Patients",
+        },
+        {
+            id: 5,
+            name: "Appointment",
+            icon: <MeetingRoom className="icon" />,
+            url: "/appointment",
+            tooltip: "Appointment",
+        },
+        {
+            id: 6,
+            name: "Prescription",
+            icon: <PrecisionManufacturingSharp className="icon" />,
+            url: "/prescription",
+            tooltip: "Prescription",
+        },
+        {
+            id: 10,
+            name: "Messages",
+            icon: <MessageOutlined className="icon" />,
+            url: "/message",
+            tooltip: "Messages",
+        }
+    ];
+
     const handleClick = (id) => {
         if (submenuOpen!== id) {
             setSubmenuOpen(id);
@@ -138,6 +176,8 @@ const SideBar = ({ handleDrawerToggle }) => {
             setSubmenuOpen(null);
         }
     };
+
+    console.log(doctorLinks);
 
     return (
         <>
