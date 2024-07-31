@@ -6,7 +6,8 @@ const initialState = {
     patient: {},
     patientsQueue: [],
     filteredPatients: [],
-    filteredPatientsQueue: []
+    filteredPatientsQueue: [],
+    symptoms: []
 };
 
 const patientSlice = createSlice({
@@ -27,6 +28,9 @@ const patientSlice = createSlice({
         },
         addFilteredPatientsQueue(state, action) {
             state.filteredPatientsQueue = action.payload
+        },
+        addSymptoms(state, action) {
+            state.symptoms = action.payload
         }
     },
 });
@@ -37,7 +41,8 @@ export const {
     addPatientDetails,
     addPatientsQueue,
     addFilteredPatients,
-    addFilteredPatientsQueue
+    addFilteredPatientsQueue,
+    addSymptoms
 } = patientSlice.actions;
 
 export const selectPatients = (state) => state.patient.patients;
@@ -45,5 +50,6 @@ export const selectPatientDetails = (state) => state.patient.patient;
 export const selectPatientsQueue = (state) => state.patient.patientsQueue;
 export const selectFilteredPatients = (state) => state.patient.filteredPatients;
 export const selectFilteredPatientsQueue = (state) => state.patient.filteredPatientsQueue;
+export const selectSymptoms = (state) => state.patient.symptoms;
 
 export default patientSlice.reducer;

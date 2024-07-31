@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Box from '@mui/material/Box';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { Space, Input } from "antd";
 
 import { colors } from "../../../../assets/utils/colors";
@@ -82,7 +82,7 @@ const GetMedicines = () => {
                 size="large"
                 variant="contained"
                 sx={{
-                    width: '60%', // Match the Box width
+                    width: '80%', // Match the Box width
                     margin: '20px auto', // Center the button with automatic margins
                     background: `${colors.primary}`,
                     "&:hover": {
@@ -119,17 +119,29 @@ const GetMedicines = () => {
                     boxShadow: 3,
                     overflowY: 'auto',
                     maxHeight: '300px', // Adjust based on your needs
-                    width: '60%',
+                    width: '80%',
                     padding: 2,
                     borderRadius: 1,
                 }}>
-                    {filteredMedicines.map((diagnosis) => (
-                        <FormControlLabel
-                            control={<Checkbox checked={checkedDiagnosis.includes(diagnosis)} onChange={handleCheckChange(diagnosis)} />}
-                            label={diagnosis}
-                            key={diagnosis}
+                    {
+                        filteredMedicines.length > 0 ?
+                        filteredMedicines.map((diagnosis) => (
+                            <FormControlLabel
+                                control={<Checkbox checked={checkedDiagnosis.includes(diagnosis)} onChange={handleCheckChange(diagnosis)} />}
+                                label={diagnosis}
+                                key={diagnosis}
+                            />
+                        )) :
+                        <TextField
+                            id="outlined-basic"
+                            size="small"
+                            variant="outlined"
+                            value={'No Data'}
+                            InputProps={{
+                                readOnly: true, // Make the TextField read-only
+                            }}
                         />
-                    ))}
+                    }
                 </Box> :
                 <Box sx={{
                     display: 'flex',
@@ -137,17 +149,29 @@ const GetMedicines = () => {
                     boxShadow: 3,
                     overflowY: 'auto',
                     maxHeight: '300px', // Adjust based on your needs
-                    width: '60%',
+                    width: '80%',
                     padding: 2,
                     borderRadius: 1,
                 }}>
-                    {initialDiagnosis.map((diagnosis) => (
-                        <FormControlLabel
-                            control={<Checkbox checked={checkedDiagnosis.includes(diagnosis)} onChange={handleCheckChange(diagnosis)} />}
-                            label={diagnosis}
-                            key={diagnosis}
+                    {
+                        initialDiagnosis.length > 0 ?
+                        initialDiagnosis.map((diagnosis) => (
+                            <FormControlLabel
+                                control={<Checkbox checked={checkedDiagnosis.includes(diagnosis)} onChange={handleCheckChange(diagnosis)} />}
+                                label={diagnosis}
+                                key={diagnosis}
+                            />
+                        )) :
+                        <TextField
+                            id="outlined-basic"
+                            size="small"
+                            variant="outlined"
+                            value={'No Data'}
+                            InputProps={{
+                                readOnly: true, // Make the TextField read-only
+                            }}
                         />
-                    ))}
+                    }
                 </Box>
             }
             <div className="w-full py-2 pt-3 flex justify-center">
