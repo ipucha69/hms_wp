@@ -2,41 +2,76 @@ import React, { useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Box from '@mui/material/Box';
+import { Button } from '@mui/material';
+import { Space, Input } from "antd";
 
 import { colors } from "../../../../assets/utils/colors";
-import { Button } from '@mui/material';
 
+const { Search } = Input;
 const SelectMedicines = () => {
     // Initial array of symptoms
-    const initialSymptoms = [
+    const initialMedicines = [
         'Fever', 'Cough', 'Headache', 'Fatigue', 'Sore Throat',
         'Nausea', 'Dizziness', 'Rash', 'Itching', 'Abdominal Pain',
         'Constipation', 'Diarrhea', 'Vomiting', 'Muscle Aches', 'Chills'
     ];
     
 
-
     // State to keep track of checked symptoms
-    const [checkedSymptoms, setCheckedSymptoms] = useState([]);
+    const [checkedMedicines, setCheckedMedicines] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [searchText, setSearchText] = useState("");
+    const [filters, setFilters] = useState(false);
+    const [filteredMedicines, setFilteredMedicines] = useState([]);
+
+
+    const handleOnSearchChange = () => {
+        if (searchText) {
+            const text = searchText.toLocaleLowerCase();
+            const searchedDiagnosis = initialMedicines.filter((symptom) => {
+                return symptom.toLocaleLowerCase()?.includes(text);
+            });
+    
+            // Update state with filtered patients
+            setFilteredMedicines(searchedDiagnosis);
+            setFilters(true);
+        } else {
+            // Update state with filtered patients
+            setFilteredMedicines([]);
+            setFilters(false);
+        }
+    };
 
     // Handler function to update checked symptoms array
-    const handleCheckChange = (symptom) => (event) => {
+    const handleCheckChange = (diagnosis) => (event) => {
         const isChecked = event.target.checked;
 
         if (isChecked) {
             // Add symptom to array if checked
-            setCheckedSymptoms([...checkedSymptoms, symptom]);
+            setCheckedMedicines([...checkedMedicines, diagnosis]);
         } else {
             // Remove symptom from array if unchecked
-            setCheckedSymptoms(checkedSymptoms.filter((s) => s !== symptom));
+            setCheckedMedicines(checkedMedicines.filter((s) => s !== diagnosis));
         }
     };
 
 
+    const handleSearchText = (value) => {
+        if (value) {
+            setSearchText(value);
+        } else {
+            // Update state with filtered customers
+            setFilteredMedicines([]);
+            setFilters(false);
+            setSearchText(value);
+        }
+    };
+    
+
+
     const selectMedicines = () => {
         setLoading(true);
-        console.log('saving medicines :', checkedSymptoms);
+        console.log('selecting medicines :', checkedMedicines);
         setLoading(false);
     }
 
@@ -65,25 +100,56 @@ const SelectMedicines = () => {
 
 
     return (
-        <div>
-            <Box sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                boxShadow: 3,
-                overflowY: 'auto',
-                maxHeight: '300px', // Adjust based on your needs
-                width: '60%',
-                padding: 2,
-                borderRadius: 1,
-            }}>
-                {initialSymptoms.map((symptom) => (
-                    <FormControlLabel
-                        control={<Checkbox checked={checkedSymptoms.includes(symptom)} onChange={handleCheckChange(symptom)} />}
-                        label={symptom}
-                        key={symptom}
+        <div className="flex flex-col gap-8 justify-center items-center py-4 px-2">
+            <div>
+                <Space.Compact size="large">
+                    <Search
+                        placeholder="Search Medicines"
+                        allowClear
+                        onChange={(e) => handleSearchText(e.target.value)}
+                        onSearch={() => handleOnSearchChange()}
                     />
-                ))}
-            </Box>
+                </Space.Compact>
+            </div>
+            {
+                filters ?
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    boxShadow: 3,
+                    overflowY: 'auto',
+                    maxHeight: '300px', // Adjust based on your needs
+                    width: '60%',
+                    padding: 2,
+                    borderRadius: 1,
+                }}>
+                    {filteredMedicines.map((medicine) => (
+                        <FormControlLabel
+                            control={<Checkbox checked={checkedMedicines.includes(medicine)} onChange={handleCheckChange(medicine)} />}
+                            label={medicine}
+                            key={medicine}
+                        />
+                    ))}
+                </Box> :
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    boxShadow: 3,
+                    overflowY: 'auto',
+                    maxHeight: '300px', // Adjust based on your needs
+                    width: '60%',
+                    padding: 2,
+                    borderRadius: 1,
+                }}>
+                    {initialMedicines.map((medicine) => (
+                        <FormControlLabel
+                            control={<Checkbox checked={checkedMedicines.includes(medicine)} onChange={handleCheckChange(medicine)} />}
+                            label={medicine}
+                            key={medicine}
+                        />
+                    ))}
+                </Box>
+            }
             <div className="w-full py-2 pt-3 flex justify-center">
                 {renderButton()}
             </div>

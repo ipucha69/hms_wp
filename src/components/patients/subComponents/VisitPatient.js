@@ -83,6 +83,9 @@ const VisitPatient = () => {
         };
 
         getPatientDetails();
+      //   dispatch(addPatientDetails(
+      //     { firstName: 'Rachel', middleName: 'Joseph', lastName: 'Hezron', email: 'hezronrachel100@gmail.com', age: 25, patientID: 'cc2', phone: '0788858654', gender: 'F', address: 'Kinondoni-Dar-es-Salaam', bloodGroup: 'O'}
+      // ));
     }, [dispatch, patientID])
 
     

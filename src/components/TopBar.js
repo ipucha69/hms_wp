@@ -158,7 +158,7 @@ const AppBar = styled(MuiAppBar, {
                         ml: 1,
                     }}
                 >
-                    HMS
+                    cureconnect
                 </Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
