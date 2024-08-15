@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../../App";
-import { collection, getDocs, query, where } from "firebase/firestore";
-
+import { collection, getDocs, query } from "firebase/firestore";
 import { Space, Input, Table} from "antd";
 
-import moment from "moment";
-import { addBedsAllotments, addFilteredBedsAllotments, selectBedsAllotments, selectFilteredBedsAllotments } from "../../../reducers/bedSlice";
+import { addBloodBank, addFilteredBloodBank, selectBloodBank, selectFilteredBloodBank } from "../../../reducers/bloodSlice";
 
 const { Search } = Input;
 
@@ -18,38 +16,20 @@ const columns = [
             render: (text) => <p>{text}</p>,
         },
         {
-            title: "Bed Number",
-            dataIndex: "number",
-            key: "number",
+            title: "Blood Group",
+            dataIndex: "bloodGroup",
+            key: "bloodGroup",
             render: (text) => <p>{text}</p>,
         },
         {
-            title: "Bed Type",
-            dataIndex: "type",
-            key: "type",
+            title: "Status",
+            dataIndex: "status",
+            key: "status",
             render: (text) => <p>{text}</p>,
-        },
-        {
-            title: "Patient Name",
-            dataIndex: "patientName",
-            key: "patientName",
-            render: (text) => <p>{text}</p>,
-        },
-        {
-            title: "Allotment Date",
-            dataIndex: "bedAllotmentDate",
-            key: "bedAllotmentDate",
-            render: (_, record) => <p>{moment(record.bedAllotmentDate.toDate()).format("YYYY-MM-DD HH:mm:ss")}</p>
-        },
-        {
-            title: "Discharge Date",
-            dataIndex: "bedAllotmentDischargeDate",
-            key: "bedAllotmentDischargeDate",
-            render: (_, record) => <p>{moment(record.bedAllotmentDischargeDate.toDate()).format("YYYY-MM-DD HH:mm:ss")}</p>
-        },
+        }
     ]
 
-const BedList = () => {
+const BloodBank = () => {
 
     const dispatch = useDispatch();
 
@@ -59,54 +39,53 @@ const BedList = () => {
 
 
     useEffect(() => {
-        const getPatients = async () => {
-            let bedsAllotmentArray = [];
+        const getDonors = async () => {
+            let bloodBankArray = [];
             // const user = auth.currentUser;
 
             setPageLoading(true);
 
             const q = query(
-                collection(db, "bedAllotmentsBucket"),
-                where("bedKeep", "==", true)
+                collection(db, "bloodBank"),
             );
 
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
                 //set data
                 const data = doc.data();
-                bedsAllotmentArray.push(data);
+                bloodBankArray.push(data);
             });
 
-            if (bedsAllotmentArray.length > 0) {
-                dispatch(addBedsAllotments(bedsAllotmentArray));
+            if (bloodBankArray.length > 0) {
+                dispatch(addBloodBank(bloodBankArray));
                 setPageLoading(false);
             } else {
-                dispatch(addBedsAllotments([]));
+                dispatch(addBloodBank([]));
                 setPageLoading(false);
             }
         };
 
-        getPatients();
+        getDonors();
     }, [dispatch])
 
 
-    const bedAllotments = useSelector(selectBedsAllotments);
-    const filteredBedsAllotments = useSelector(selectFilteredBedsAllotments);
+    const bloodBank = useSelector(selectBloodBank);
+    const filteredBloodBank = useSelector(selectFilteredBloodBank);
 
 
     const handleOnSearchChange = () => {
         if (searchText) {
             const text = searchText.toLocaleLowerCase();
-            const searchedBeds = bedAllotments.filter((allotment) => {
-                return allotment?.number?.toLocaleLowerCase()?.includes(text);
+            const searchedDonors = bloodBank.filter((donor) => {
+                return donor?.bloodGroup?.toLocaleLowerCase()?.includes(text);
             });
     
             // Update state with filtered patients
-            dispatch(addFilteredBedsAllotments(searchedBeds));
+            dispatch(addFilteredBloodBank(searchedDonors));
             setFilters(true);
         } else {
             // Update state with filtered patients
-            dispatch(addFilteredBedsAllotments([]));
+            dispatch(addFilteredBloodBank([]));
             setFilters(false);
         }
     };
@@ -117,26 +96,22 @@ const BedList = () => {
             setSearchText(value);
         } else {
             // Update state with filtered customers
-            dispatch(addFilteredBedsAllotments([]));
+            dispatch(addFilteredBloodBank([]));
             setFilters(false);
             setSearchText(value);
         }
     };
 
 
-
-    const sortedBedAllotments = bedAllotments
+    const sortedBloodBank = bloodBank
     .slice()
-    .sort((a, b) => new Date(b.bedAllotmentDate) - new Date(a.bedAllotmentDate))
-    .map((allotment, index) => ({ ...allotment, key: index + 1 }));
+    .sort((a, b) => (b.bloodGroup) - (a.bloodGroup))
+    .map((donor, index) => ({ ...donor, key: index + 1 }));
 
-
-    const sortedFilteredBedAllotments = filteredBedsAllotments
+    const sortedFilteredBloodBank = filteredBloodBank
     .slice()
-    .sort((a, b) => new Date(b.bedAllotmentDate) - new Date(a.bedAllotmentDate))
-    .map((allotment, index) => ({ ...allotment, key: index + 1 }));
-
-
+    .sort((a, b) => (b.bloodGroup) - (a.bloodGroup))
+    .map((donor, index) => ({ ...donor, key: index + 1 }));
 
     return (
         <div className="relative">
@@ -151,7 +126,7 @@ const BedList = () => {
                 <div>
                     <Space.Compact size="large">
                         <Search
-                            placeholder="Search patientID"
+                            placeholder="Search Blood Group"
                             allowClear
                             onChange={(e) => handleSearchText(e.target.value)}
                             onSearch={() => handleOnSearchChange()}
@@ -165,7 +140,7 @@ const BedList = () => {
                     <div className="pt-4">
                         <Table
                             columns={columns}
-                            dataSource={sortedFilteredBedAllotments}
+                            dataSource={sortedFilteredBloodBank}
                             size="middle"
                             pagination={{ defaultPageSize: 30, size: "middle" }}
                         />
@@ -176,7 +151,7 @@ const BedList = () => {
                     <div className="pt-4">
                         <Table
                             columns={columns}
-                            dataSource={sortedBedAllotments}
+                            dataSource={sortedBloodBank}
                             size="middle"
                             pagination={{ defaultPageSize: 30, size: "middle" }}
                         />
@@ -188,4 +163,4 @@ const BedList = () => {
     )
 }
 
-export default BedList
+export default BloodBank

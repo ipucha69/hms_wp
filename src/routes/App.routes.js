@@ -5,7 +5,6 @@ import Login from "../pages/auth/Login";
 import Home from "../components/home/Home";
 import Doctor from "../components/doctors/Doctor";
 import Schedule from "../components/schedules/Schedule";
-import AppointmentList from "../components/appointments/subComponents/AppointmentList";
 import Prescription from "../components/prescriptions/Prescription";
 import NoticeBoard from "../components/notices/NoticeBoard";
 import Profile from "../components/profile/Profile";
@@ -14,8 +13,10 @@ import Bed from "../components/beds/Bed";
 import Message from "../components/messages/Message";
 import HospitalActivities from "../components/hospitals/HospitalActivities";
 import PatientQueue from "../components/patients/subComponents/PatientQueue";
-import VisitPatient from "../components/patients/subComponents/VisitPatient";
-
+import IPDVisitPatient from "../components/patients/subComponents/IPDVisitPatient";
+import Appointment from "../components/appointments/Appointment";
+import Blood from "../components/blood/Blood";
+import Report from "../components/report/Report"
 
 const LoginElement = () => <Login />;
 
@@ -43,9 +44,15 @@ const PatientQueueElement = () => (
     </AppLayout>
 )
 
+// const PatientQueueVisitElement = () => (
+//     <AppLayout>
+//         <VisitPatient />
+//     </AppLayout>
+// )
+
 const PatientQueueVisitElement = () => (
     <AppLayout>
-        <VisitPatient />
+        <IPDVisitPatient />
     </AppLayout>
 )
 
@@ -57,7 +64,7 @@ const ScheduleElement = () => (
 
 const AppointmentElement = () => (
     <AppLayout>
-        <AppointmentList />
+        <Appointment />
     </AppLayout>
 );
 
@@ -97,6 +104,19 @@ const ProfileElement = () => (
     </AppLayout>
 );
 
+const BloodElement = () => (
+    <AppLayout>
+        <Blood />
+    </AppLayout>
+);
+
+const ReportElement = () => (
+    <AppLayout>
+        <Report />
+    </AppLayout>
+);
+
+
 
 const App = () => {
     return (
@@ -123,6 +143,8 @@ const App = () => {
                     <Route path="/hospital-activities" element={<HospitalElement />} />
                     <Route path="/message" element={<MessageElement />} />
                     <Route path="/profile" element={<ProfileElement />} />
+                    <Route path="/blood-bank" element={<BloodElement />} />
+                    <Route path="/report" element={<ReportElement />} />
                 </Route>
 
             </Routes>

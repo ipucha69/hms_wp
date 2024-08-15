@@ -6,7 +6,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { Space, Input, Table} from "antd";
 
 import moment from "moment";
-import { addBedsAllotments, addFilteredBedsAllotments, selectBedsAllotments, selectFilteredBedsAllotments } from "../../../reducers/bedSlice";
+import { addBirthReport, addFilteredBirthReport, selectBirthReports, selectFilteredBirthReports } from "../../../reducers/reportSlice";
 
 const { Search } = Input;
 
@@ -18,38 +18,32 @@ const columns = [
             render: (text) => <p>{text}</p>,
         },
         {
-            title: "Bed Number",
-            dataIndex: "number",
-            key: "number",
+            title: "Description",
+            dataIndex: "description",
+            key: "description",
             render: (text) => <p>{text}</p>,
         },
         {
-            title: "Bed Type",
-            dataIndex: "type",
-            key: "type",
-            render: (text) => <p>{text}</p>,
-        },
-        {
-            title: "Patient Name",
-            dataIndex: "patientName",
-            key: "patientName",
-            render: (text) => <p>{text}</p>,
-        },
-        {
-            title: "Allotment Date",
-            dataIndex: "bedAllotmentDate",
-            key: "bedAllotmentDate",
-            render: (_, record) => <p>{moment(record.bedAllotmentDate.toDate()).format("YYYY-MM-DD HH:mm:ss")}</p>
-        },
-        {
-            title: "Discharge Date",
-            dataIndex: "bedAllotmentDischargeDate",
-            key: "bedAllotmentDischargeDate",
-            render: (_, record) => <p>{moment(record.bedAllotmentDischargeDate.toDate()).format("YYYY-MM-DD HH:mm:ss")}</p>
-        },
+          title: "Report Date",
+          dataIndex: "reportDate",
+          key: "reportDate",
+          render: (_, record) => <p>{moment(record.reportDate.toDate()).format("YYYY-MM-DD HH:mm:ss")}</p>
+      },
+      {
+          title: "Patient Name",
+          dataIndex: "patientName",
+          key: "patientName",
+          render: (text) => <p>{text}</p>,
+      },
+      {
+        title: "Doctor Name",
+        dataIndex: "doctorName",
+        key: "doctorName",
+        render: (text) => <p>{text}</p>,
+    },
     ]
 
-const BedList = () => {
+const BirthReport = () => {
 
     const dispatch = useDispatch();
 
@@ -60,28 +54,28 @@ const BedList = () => {
 
     useEffect(() => {
         const getPatients = async () => {
-            let bedsAllotmentArray = [];
+            let reportsArray = [];
             // const user = auth.currentUser;
 
             setPageLoading(true);
 
             const q = query(
-                collection(db, "bedAllotmentsBucket"),
-                where("bedKeep", "==", true)
+                collection(db, "reportsGenerated"),
+                where("reportName", "==", "Birth")
             );
 
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
                 //set data
                 const data = doc.data();
-                bedsAllotmentArray.push(data);
+                reportsArray.push(data);
             });
 
-            if (bedsAllotmentArray.length > 0) {
-                dispatch(addBedsAllotments(bedsAllotmentArray));
+            if (reportsArray.length > 0) {
+                dispatch(addBirthReport(reportsArray));
                 setPageLoading(false);
             } else {
-                dispatch(addBedsAllotments([]));
+                dispatch(addBirthReport([]));
                 setPageLoading(false);
             }
         };
@@ -90,23 +84,23 @@ const BedList = () => {
     }, [dispatch])
 
 
-    const bedAllotments = useSelector(selectBedsAllotments);
-    const filteredBedsAllotments = useSelector(selectFilteredBedsAllotments);
+    const birthReports = useSelector(selectBirthReports);
+    const filteredBirthReport = useSelector(selectFilteredBirthReports);
 
 
     const handleOnSearchChange = () => {
         if (searchText) {
             const text = searchText.toLocaleLowerCase();
-            const searchedBeds = bedAllotments.filter((allotment) => {
-                return allotment?.number?.toLocaleLowerCase()?.includes(text);
+            const searchedReport = birthReports.filter((report) => {
+                return report?.patientName?.toLocaleLowerCase()?.includes(text);
             });
     
             // Update state with filtered patients
-            dispatch(addFilteredBedsAllotments(searchedBeds));
+            dispatch(addFilteredBirthReport(searchedReport));
             setFilters(true);
         } else {
             // Update state with filtered patients
-            dispatch(addFilteredBedsAllotments([]));
+            dispatch(addFilteredBirthReport([]));
             setFilters(false);
         }
     };
@@ -117,7 +111,7 @@ const BedList = () => {
             setSearchText(value);
         } else {
             // Update state with filtered customers
-            dispatch(addFilteredBedsAllotments([]));
+            dispatch(addFilteredBirthReport([]));
             setFilters(false);
             setSearchText(value);
         }
@@ -125,16 +119,16 @@ const BedList = () => {
 
 
 
-    const sortedBedAllotments = bedAllotments
+    const sortedBirthReports = birthReports
     .slice()
-    .sort((a, b) => new Date(b.bedAllotmentDate) - new Date(a.bedAllotmentDate))
-    .map((allotment, index) => ({ ...allotment, key: index + 1 }));
+    .sort((a, b) => new Date(b.reportDate) - new Date(a.reportDate))
+    .map((report, index) => ({ ...report, key: index + 1 }));
 
 
-    const sortedFilteredBedAllotments = filteredBedsAllotments
+    const sortedFilteredBirthReport = filteredBirthReport
     .slice()
-    .sort((a, b) => new Date(b.bedAllotmentDate) - new Date(a.bedAllotmentDate))
-    .map((allotment, index) => ({ ...allotment, key: index + 1 }));
+    .sort((a, b) => new Date(b.reportDate) - new Date(a.reportDate))
+    .map((report, index) => ({ ...report, key: index + 1 }));
 
 
 
@@ -151,7 +145,7 @@ const BedList = () => {
                 <div>
                     <Space.Compact size="large">
                         <Search
-                            placeholder="Search patientID"
+                            placeholder="Search patient"
                             allowClear
                             onChange={(e) => handleSearchText(e.target.value)}
                             onSearch={() => handleOnSearchChange()}
@@ -165,7 +159,7 @@ const BedList = () => {
                     <div className="pt-4">
                         <Table
                             columns={columns}
-                            dataSource={sortedFilteredBedAllotments}
+                            dataSource={sortedFilteredBirthReport}
                             size="middle"
                             pagination={{ defaultPageSize: 30, size: "middle" }}
                         />
@@ -176,7 +170,7 @@ const BedList = () => {
                     <div className="pt-4">
                         <Table
                             columns={columns}
-                            dataSource={sortedBedAllotments}
+                            dataSource={sortedBirthReports}
                             size="middle"
                             pagination={{ defaultPageSize: 30, size: "middle" }}
                         />
@@ -188,4 +182,4 @@ const BedList = () => {
     )
 }
 
-export default BedList
+export default BirthReport

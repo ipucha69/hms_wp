@@ -7,8 +7,9 @@ import { useDispatch } from "react-redux";
 // import { doc, getDoc } from "firebase/firestore";
 // import { db } from "../../App";
 
-import AppointmentList from "./subComponents/AppointmentList";
-import AddAppointment from "./subComponents/AddAppointment";
+import BloodDonorList from "./subComponents/BloodDonorList";
+import BloodBank from "./subComponents/BloodBank";
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -45,7 +46,7 @@ function TabPanel(props) {
   
   const primary = "#0A365C";
 
-const Appointment = () => {
+const Blood = () => {
 
     const dispatch = useDispatch();
 
@@ -84,16 +85,16 @@ const Appointment = () => {
                     indicatorColor="primary"
                     sx={{ color: "#0A365C" }}
                 >
-                    <Tab label="Appointment List" {...a11yProps(0)} />
-                    <Tab label="Add Appointment" {...a11yProps(1)} />
+                    <Tab label="Blood Donor List" {...a11yProps(0)} />
+                    <Tab label="Blood Bank" {...a11yProps(1)} />
                 </Tabs>
               </Box>
                 <TabPanel value={value} index={0}>
-                  <AppointmentList />
+                  <BloodDonorList />
                 </TabPanel>
 
                 <TabPanel value={value} index={1}>
-                  <AddAppointment />
+                  <BloodBank />
                 </TabPanel>
             </div>
         );
@@ -118,4 +119,4 @@ const Appointment = () => {
       );
 }
 
-export default Appointment;
+export default Blood;

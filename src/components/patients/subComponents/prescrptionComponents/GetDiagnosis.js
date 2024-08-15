@@ -220,6 +220,7 @@ const GetDiagnosis = () => {
     const dispatch = useDispatch();
     const [checkedSymptoms, setCheckedSymptoms] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [pageLoading, setPageLoading] = useState(false);
     const [searchText, setSearchText] = useState("");
     const [filters, setFilters] = useState(false);
     const [filteredSymptoms, setFilteredSymptoms] = useState([]);
@@ -228,14 +229,14 @@ const GetDiagnosis = () => {
 
         const fetchSymptoms = async () => {
             try {
-                setLoading(true);
+                setPageLoading(true);
                 const querySnapshot = await getDocs(collection(db, "symptoms"));
                 const symptomsFromDb = querySnapshot.docs.map(doc => doc.data());
                 addSymptoms(symptomsFromDb); // Ensure this function exists and works as expected
-                setLoading(false);
+                setPageLoading(false);
             } catch (error) {
                 console.error("Error fetching symptoms:", error);
-                setLoading(false);
+                setPageLoading(false);
             }
         };
     
@@ -324,6 +325,9 @@ const GetDiagnosis = () => {
             </Button>
         );
     };
+
+
+    console.log(pageLoading)
 
 
     return (

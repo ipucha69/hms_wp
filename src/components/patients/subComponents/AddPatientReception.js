@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { Button, FormControl, InputLabel } from "@mui/material";
+import { Button, Checkbox, FormControl, FormControlLabel, InputLabel } from "@mui/material";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { colors } from "../../../assets/utils/colors";
@@ -21,6 +21,9 @@ const style = {
     bgcolor: "background.paper",
     p: 4,
 };
+
+const chronics = ['Diabtices', 'Low blood pressure', 'Viral fever', 'bp', 'High BP fever', 'Low sugar'];
+const allergies = ['Zink', 'Paracemol', 'crocine', 'Combilam', 'D-Cold 1', 'Dcoldlotal', 'Azithromycine', 'Paramol']
 
 const AddPatientReception = () => {
     const [open, setOpen] = useState(false);
@@ -46,6 +49,8 @@ const AddPatientReception = () => {
     const [kin_status, setKin_Status] = useState("");
     const [sponsorship, setSponsorship] = useState("");
     const [reception_department, setRecep_department] = useState("");
+    const [checkedChronics, setCheckedChronics] = useState([]);
+    const [checkedAllergies, setCheckedAllergies] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const dispatch = useDispatch();
@@ -60,6 +65,31 @@ const AddPatientReception = () => {
             dispatch();
             console.log('Registering patient...');
             setLoading(true);
+        }
+    };
+
+
+    const handleChronicCheckChange = (chronic) => (event) => {
+        const isChecked = event.target.checked;
+
+        if (isChecked) {
+            // Add symptom to array if checked
+            setCheckedChronics([...checkedChronics, chronic]);
+        } else {
+            // Remove symptom from array if unchecked
+            setCheckedChronics(checkedChronics.filter((s) => s !== chronic));
+        }
+    };
+
+    const handleAllergyCheckChange = (allergy) => (event) => {
+        const isChecked = event.target.checked;
+
+        if (isChecked) {
+            // Add symptom to array if checked
+            setCheckedAllergies([...checkedAllergies, allergy]);
+        } else {
+            // Remove symptom from array if unchecked
+            setCheckedAllergies(checkedAllergies.filter((s) => s !== allergy));
         }
     };
 
@@ -95,6 +125,10 @@ const AddPatientReception = () => {
             );
         }
     };
+
+
+    console.log('chronics', checkedChronics);
+    console.log('allergies', checkedAllergies);
 
 
     return (
@@ -379,6 +413,54 @@ const AddPatientReception = () => {
                                             onChange={(e) => setSponsorship(e.target.value)}
                                         />
                                     </div>
+                                </div>
+                            </div>
+                            <div className="my-6 space-y-1">
+                                <div className="flex flex-row gap-8 justify-between space-x-4 items-end)">
+                                    <div><h3 className="flex justify-center text-center mx-0 text-xl py-4">Chronics</h3></div>
+                                    <div><h3 className="flex justify-center text-center mx-0 text-xl py-4">Allergies</h3></div>
+                                </div>
+                                <div className="flex flex-row gap-8 justify-end space-x-4 items-end)">
+                                    <Box sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        boxShadow: 3,
+                                        overflowY: 'auto',
+                                        maxHeight: '300px', // Adjust based on your needs
+                                        width: '80%',
+                                        padding: 2,
+                                        borderRadius: 1,
+                                    }}>
+                                        {
+                                            chronics.map((chronic) => (
+                                                <FormControlLabel
+                                                    control={<Checkbox checked={checkedChronics.includes(chronic)} onChange={handleChronicCheckChange(chronic)} />}
+                                                    label={chronic}
+                                                    key={chronic}
+                                                />
+                                            ))
+                                        }
+                                    </Box>
+                                    <Box sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        boxShadow: 3,
+                                        overflowY: 'auto',
+                                        maxHeight: '300px', // Adjust based on your needs
+                                        width: '80%',
+                                        padding: 2,
+                                        borderRadius: 1,
+                                    }}>
+                                        {
+                                            allergies.map((allergy) => (
+                                                <FormControlLabel
+                                                    control={<Checkbox checked={checkedAllergies.includes(allergy)} onChange={handleAllergyCheckChange(allergy)} />}
+                                                    label={allergy}
+                                                    key={allergy}
+                                                />
+                                            ))
+                                        }
+                                    </Box>
                                 </div>
                             </div>
                         </div>

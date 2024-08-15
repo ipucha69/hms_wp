@@ -4,8 +4,8 @@ import { Tabs, Tab, Box, Grid, TextField} from '@mui/material';
 // import { Verified } from '@mui/icons-material';
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../../App";
+// import { doc, getDoc } from "firebase/firestore";
+// import { db } from "../../../App";
 
 import Consumables from "./visits/Consumables";
 import Documents from "./visits/Documents";
@@ -13,10 +13,12 @@ import HealthDetails from "./visits/HealthDetails";
 import LabTest from "./visits/LabTest";
 import OtherCharges from "./visits/OtherCharges";
 import Prescription from "./visits/prescription";
-import PreviousHistory from "./visits/PreviousHistory";
+// import PreviousHistory from "./visits/PreviousHistory";
 import Procedures from "./visits/Procedures";
 
 import { addPatientDetails, selectPatientDetails } from "../../../reducers/patientSlice";
+import PreviousDayHistory from "./visits/PreviousDayHistory";
+import AllocateRoom from "./visits/AllocateRoom";
 
 
 function TabPanel(props) {
@@ -54,7 +56,7 @@ function TabPanel(props) {
   
   const primary = "#0A365C";
 
-const VisitPatient = () => {
+const IPDVisitPatient = () => {
 
     const [pageLoading, setPageLoading] = useState(false);
     const [value, setValue] = useState(0);
@@ -203,45 +205,50 @@ const VisitPatient = () => {
                     indicatorColor="primary"
                     sx={{ color: "#0A365C" }}
                 >
-                    <Tab label="PREVIOUS HISTORY" {...a11yProps(0)} />
-                    <Tab label="HEALTH DETAILS" {...a11yProps(1)} />
-                    <Tab label="DOCUMENTS" {...a11yProps(2)} />
-                    <Tab label="PRESCRIPTION" {...a11yProps(3)} />
-                    <Tab label="LAB TEST" {...a11yProps(4)} />
-                    <Tab label="PROCEDURES" {...a11yProps(5)} />
-                    <Tab label="CONSUMABLES" {...a11yProps(6)} />
-                    <Tab label="OTHER CHARGES" {...a11yProps(7)} />
+                    <Tab label="PREVIOUS DAY HISTORY" {...a11yProps(0)} />
+                    <Tab label="ALLOCATE ROOM" {...a11yProps(1)} />
+                    <Tab label="HEALTH DETAILS" {...a11yProps(2)} />
+                    <Tab label="DOCUMENTS" {...a11yProps(3)} />
+                    <Tab label="PRESCRIPTION" {...a11yProps(4)} />
+                    <Tab label="LAB TEST" {...a11yProps(5)} />
+                    <Tab label="PROCEDURES" {...a11yProps(6)} />
+                    <Tab label="CONSUMABLES" {...a11yProps(7)} />
+                    <Tab label="OTHER CHARGES" {...a11yProps(8)} />
                 </Tabs>
               </Box>
                 <TabPanel value={value} index={0}>
-                  <PreviousHistory />
+                  <PreviousDayHistory />
                 </TabPanel>
 
                 <TabPanel value={value} index={1}>
-                  <HealthDetails />
+                  <AllocateRoom />
                 </TabPanel>
 
                 <TabPanel value={value} index={2}>
-                  <Documents />
+                  <HealthDetails />
                 </TabPanel>
 
                 <TabPanel value={value} index={3}>
+                  <Documents />
+                </TabPanel>
+
+                <TabPanel value={value} index={4}>
                   <Prescription />
                 </TabPanel>
                 
-                <TabPanel value={value} index={4}>
+                <TabPanel value={value} index={5}>
                   <LabTest />
                 </TabPanel>
 
-                <TabPanel value={value} index={5}>
+                <TabPanel value={value} index={6}>
                   <Procedures />
                 </TabPanel>
 
-                <TabPanel value={value} index={6}>
+                <TabPanel value={value} index={7}>
                   <Consumables />
                 </TabPanel>
 
-                <TabPanel value={value} index={7}>
+                <TabPanel value={value} index={8}>
                   <OtherCharges />
                 </TabPanel>
             </div>
@@ -267,4 +274,4 @@ const VisitPatient = () => {
       );
 }
 
-export default VisitPatient
+export default IPDVisitPatient

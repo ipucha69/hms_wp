@@ -22,7 +22,9 @@ import {
     BedSharp,
     LocalHospitalOutlined,
     HomeOutlined,
-    MessageOutlined
+    MessageOutlined,
+    Bloodtype,
+    ReportOff
 } from "@mui/icons-material";
 
 const drawerWidth = 237;
@@ -140,32 +142,46 @@ const SideBar = ({ handleDrawerToggle }) => {
             tooltip: "Dashboard",
         },
         {
-            id: 3,
+            id: 2,
             name: "Patients",
             icon: <PersonOff className="icon" />,
             url: "/patients",
             tooltip: "Patients",
         },
         {
-            id: 5,
+            id: 3,
             name: "Appointment",
             icon: <MeetingRoom className="icon" />,
             url: "/appointment",
             tooltip: "Appointment",
         },
         {
-            id: 6,
+            id: 4,
             name: "Prescription",
             icon: <PrecisionManufacturingSharp className="icon" />,
             url: "/prescription",
             tooltip: "Prescription",
         },
         {
-            id: 10,
-            name: "Messages",
-            icon: <MessageOutlined className="icon" />,
-            url: "/message",
-            tooltip: "Messages",
+            id: 5,
+            name: "Bed",
+            icon: <BedSharp className="icon" />,
+            url: "/bed",
+            tooltip: "Bed",
+        },
+        {
+            id: 6,
+            name: "Blood Bank",
+            icon: <Bloodtype className="icon" />,
+            url: "/blood-bank",
+            tooltip: "Blood Bank",
+        },
+        {
+            id: 7,
+            name: "Report",
+            icon: <ReportOff className="icon" />,
+            url: "/report",
+            tooltip: "Report",
         }
     ];
 
@@ -177,7 +193,7 @@ const SideBar = ({ handleDrawerToggle }) => {
         }
     };
 
-    console.log(doctorLinks);
+    console.log(links);
 
     return (
         <>
@@ -199,7 +215,7 @@ const SideBar = ({ handleDrawerToggle }) => {
                 <Toolbar />
                 <Box sx={{ overflow: "auto" }}>
                     <List>
-                        {links.map((link) =>
+                        {doctorLinks.map((link) =>
                             link.children? (
                                 <React.Fragment key={link.id}>
                                     <SideNavListItem onClick={() => handleClick(link.id)} disablePadding>

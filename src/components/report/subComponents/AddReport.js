@@ -8,21 +8,23 @@ import { Autocomplete, Button, TextField } from "@mui/material";
 import { colors } from "../../../assets/utils/colors";
 import toast from "react-hot-toast";
 
-import { addBeds, selectBeds } from "../../../reducers/bedSlice";
 import { addPatients, selectPatients } from "../../../reducers/patientSlice";
+import { addReports, selectReports } from "../../../reducers/reportSlice";
+import { addDoctors, selectDoctors } from "../../../reducers/doctorSlice";
 
 
-const AssignBed = () => {
+const AddReport = () => {
 
     const dispatch = useDispatch();
 
     const [pageLoading, setPageLoading] = useState(false);
     const [loading, setLoading] = useState(false);
     const [patient, setPatient] = useState("");
-    const [bed, setBed] = useState("");
-    const [bedAllotmentDate, setBedAllotmentDate] = useState("");
-    const [bedAllotmentDischargeDate, setBedAllotmentDischargeDate] = useState("");
-
+    const [doctor, setDoctor] = useState("");
+    const [report, setReport] = useState("");
+    const [reportDate, setReportDate] = useState("");
+    const [description, setDescription] = useState("");
+    
 
     useEffect(() => {
         const getPatients = async () => {
@@ -53,40 +55,67 @@ const AssignBed = () => {
             }
         };
 
-        const getBeds = async () => {
-            let bedsArray = [];
+        const getReports = async () => {
+            let reportsArray = [];
 
             // setPageLoading(true);
 
             const q = query(
-                collection(db, "bedsBucket"),
-                where("occupied", "==", false)
+                collection(db, "reportsBucket"),
             );
 
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
                 //set data
                 const data = doc.data();
-                bedsArray.push(data);
+                reportsArray.push(data);
             });
 
-            if (bedsArray.length > 0) {
-                dispatch(addBeds(bedsArray));
+            if (reportsArray.length > 0) {
+                dispatch(addReports(reportsArray));
                 // setPageLoading(false);
             } else {
-                dispatch(addBeds([]));
+                dispatch(addReports([]));
+                // setPageLoading(false);
+            }
+        };
+
+        const getDoctors = async () => {
+            let doctorsArray = [];
+
+            // setPageLoading(true);
+
+            const q = query(
+                collection(db, "userBucket"),
+                where("role", "==", "doctor")
+            );
+
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                //set data
+                const data = doc.data();
+                doctorsArray.push(data);
+            });
+
+            if (doctorsArray.length > 0) {
+                dispatch(addDoctors(doctorsArray));
+                // setPageLoading(false);
+            } else {
+                dispatch(addDoctors([]));
                 // setPageLoading(false);
             }
         };
 
         getPatients();
-        getBeds();
+        getReports();
+        getDoctors()
 
     }, [dispatch])
 
 
     const patients = useSelector(selectPatients);
-    const beds = useSelector(selectBeds);
+    const reports = useSelector(selectReports);
+    const doctors = useSelector(selectDoctors);
 
     const sortedPatients = patients.map((patient) => ({
         id: patient.patientID,
@@ -94,65 +123,64 @@ const AssignBed = () => {
         data: patient,
     }));
 
-    const sortedBeds = beds.map((bed) => ({
-        id: bed.bedID,
-        label: `${bed.number} - ${bed.type}`,
-        data: bed,
+    const sortedReports = reports.map((report) => ({
+        id: report.reportID,
+        label: report.reportName,
+        data: report,
     }));
 
 
-    const registerBed = async (e) => {
+    const sortedDoctors = doctors.map((doctor) => ({
+        id: doctor.id,
+        label: `${doctor.firstName} ${doctor.lastName}`,
+        data: doctor,
+    }));
+
+
+    const registerReport = async (e) => {
         e.preventDefault();
 
         const user = auth.currentUser;
 
+        console.log(user.tenantId);
+
         if (!patient) {
             toast.error("Please select patient");
-        } else if (!bed) {
-            toast.error("Please select bed");
-        } else if (!bedAllotmentDate) {
-            toast.error("Please select allotment date");
-        } else if (!bedAllotmentDischargeDate) {
-            toast.error("Please select discharge date");
+        } else if (!report) {
+            toast.error("Please select report");
+        } else if (!doctor) {
+            toast.error("Please select doctor");
+        } else if (!reportDate) {
+            toast.error("Please select report date");
         } else {
             try {
                 setLoading(true);
-                const dataRef = doc(collection(db, "bedAllotmentsBucket"));
+                const dataRef = doc(collection(db, "reportsGenerated"));
                 await setDoc(dataRef, {
                     patientID: patient?.id,
                     patientName: patient?.label,
                     age: patient?.data?.age,
                     gender: patient?.data?.gender,
                     bloodGroup: patient?.data?.bloodGroup,
-                    doctorID: user.uid,
-                    bedKeep: true,
-                    number: bed?.data?.number,
-                    type: bed?.data?.type,
-                    bedAllotmentDate: Timestamp.fromDate(new Date(bedAllotmentDate)),
-                    bedAllotmentDischargeDate: Timestamp.fromDate(new Date(bedAllotmentDischargeDate)),
+                    doctorID: doctor?.id,
+                    description,
+                    doctorName: doctor?.label,
+                    reportName: report?.label,
+                    reportDate: Timestamp.fromDate(new Date(reportDate)),
                 })
                     .then( async () => {
-                        const dataDocRef = doc(db, "bedAllotmentsBucket", dataRef.id);
+                        const dataDocRef = doc(db, "reportsGenerated", dataRef.id);
                         await updateDoc(dataDocRef, {
-                            bedAllotmentID: dataRef.id
+                            reportID: dataRef.id
                         })
-                        .then( async () => {
-                            const bedDocRef = doc(db, "bedsBucket", bed.id);
-                            await updateDoc(bedDocRef, {
-                                occupied: true,
-                            })
-
-                            setLoading(false);
-                            setPatient("");
-                            setBed("");
-                            setBedAllotmentDate("");
-                            setBedAllotmentDischargeDate("");
-                            toast.success("bed is assigned successfully");
-                        })
-                        .catch((error) => {
-                            toast.error(error.message);
-                            setLoading(false);
-                        });
+                        
+                        setLoading(false);
+                        setPatient("");
+                        setReport("");
+                        setDoctor("");
+                        setReportDate("");
+                        setDescription("");
+                        toast.success("report is saved successfully");
                     })
                     .catch((error) => {
                         toast.error(error.message);
@@ -171,10 +199,13 @@ const AssignBed = () => {
     };
 
 
-    const bedOnChange = (e, value) => {
-        setBed(value);
+    const reportOnChange = (e, value) => {
+        setReport(value);
     };
 
+    const doctorOnChange = (e, value) => {
+        setDoctor(value);
+    };
 
 
     const renderButton = () => {
@@ -202,9 +233,9 @@ const AssignBed = () => {
                             background: `${colors.bgColor6}`,
                         },
                     }}
-                    onClick={(e) => registerBed(e)}
+                    onClick={(e) => registerReport(e)}
                 >
-                    AASIGN BED ALLOTMENT
+                    AASIGN REPORT
                 </Button>
             );
         }
@@ -223,14 +254,14 @@ const AssignBed = () => {
                 <div className="w-full py-2 flex justify-center">
                     <Autocomplete
                         id="combo-box-demo"
-                        options={sortedBeds}
+                        options={sortedReports}
                         size="small"
                         freeSolo
                         className="w-[82%]"
-                        value={bed}
-                        onChange={bedOnChange}
+                        value={report}
+                        onChange={reportOnChange}
                         renderInput={(params) => (
-                            <TextField {...params} label="Select Bed" />
+                            <TextField {...params} label="Select Report" />
                         )}
                     />
                 </div>
@@ -249,14 +280,30 @@ const AssignBed = () => {
                     />
                 </div>
                 <div className="w-full py-2 flex justify-center">
-                    <TextField
-                        id="outlined-dob"
+                    <Autocomplete
+                        id="combo-box-demo"
+                        options={sortedDoctors}
                         size="small"
+                        freeSolo
+                        className="w-[82%]"
+                        value={doctor}
+                        onChange={doctorOnChange}
+                        renderInput={(params) => (
+                            <TextField {...params} label="Select Doctor" />
+                        )}
+                    />
+                </div>
+                <div className="w-full py-2 flex justify-center">
+                    <TextField
+                        size="small"
+                        id="outlined-complain"
+                        multiline
+                        rows={1}
+                        label="Description"
                         variant="outlined"
                         className="w-[82%]"
-                        value={bedAllotmentDate}
-                        onChange={(e) => setBedAllotmentDate(e.target.value)}
-                        type="date"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
                     />
                 </div>
                 <div className="w-full py-2 flex justify-center">
@@ -265,8 +312,8 @@ const AssignBed = () => {
                         size="small"
                         variant="outlined"
                         className="w-[82%]"
-                        value={bedAllotmentDischargeDate}
-                        onChange={(e) => setBedAllotmentDischargeDate(e.target.value)}
+                        value={reportDate}
+                        onChange={(e) => setReportDate(e.target.value)}
                         type="date"
                     />
                 </div>
@@ -278,4 +325,4 @@ const AssignBed = () => {
     );
 }
 
-export default AssignBed
+export default AddReport
