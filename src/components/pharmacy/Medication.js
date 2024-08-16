@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 // import { db } from "../../App";
 
 import MedicationList from "./medications/MedicationList";
-import AddMedication from "./medications/AddMedication";
+// import AddMedication from "./medications/AddMedication";
 
 
 
@@ -87,16 +87,16 @@ const Medication = () => {
                     sx={{ color: "#0A365C" }}
                 >
                     <Tab label="Prescription List" {...a11yProps(0)} />
-                    <Tab label="Add Medication" {...a11yProps(1)} />
+                    {/* <Tab label="Add Medication" {...a11yProps(1)} /> */}
                 </Tabs>
               </Box>
                 <TabPanel value={value} index={0}>
                   <MedicationList />
                 </TabPanel>
 
-                <TabPanel value={value} index={1}>
+                {/* <TabPanel value={value} index={1}>
                   <AddMedication />
-                </TabPanel>
+                </TabPanel> */}
             </div>
         );
     };

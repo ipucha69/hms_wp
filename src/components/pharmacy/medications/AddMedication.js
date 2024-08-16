@@ -64,6 +64,7 @@ const AddMedication = () => {
                 await updateDoc(dataDocRef, {
                     pharmacyMedication
                 })
+                toast.error("updated successfull");
                 setLoading(false);
             } catch (error) {
                 toast.error(error.message);
@@ -106,7 +107,7 @@ const AddMedication = () => {
         }
     };
 
-    const prescriptionDate = moment(prescriptionDetails.prescriptionDate.toDate()).format("YYYY-MM-DD HH:mm:ss")
+    const prescriptionDate = prescriptionDetails?.prescriptionDate ? moment(prescriptionDetails.prescriptionDate.toDate()).format("YYYY-MM-DD HH:mm:ss") : '';
 
     return (
         <div className="relative">
@@ -145,7 +146,7 @@ const AddMedication = () => {
                         size="small"
                         id="outlined-complain"
                         multiline
-                        rows={2}
+                        rows={1}
                         label="Case History"
                         variant="outlined"
                         className="w-[82%]"
@@ -158,7 +159,7 @@ const AddMedication = () => {
                         size="small"
                         id="outlined-complain"
                         multiline
-                        rows={2}
+                        rows={1}
                         label="Medication"
                         variant="outlined"
                         className="w-[82%]"
@@ -171,7 +172,7 @@ const AddMedication = () => {
                         size="small"
                         id="outlined-complain"
                         multiline
-                        rows={2}
+                        rows={1}
                         label="Medication from Pharmacy"
                         variant="outlined"
                         className="w-[82%]"
@@ -183,6 +184,8 @@ const AddMedication = () => {
                     <TextField
                         size="small"
                         id="outlined-complain"
+                        multiline
+                        rows={1}
                         label="Description"
                         variant="outlined"
                         className="w-[82%]"
