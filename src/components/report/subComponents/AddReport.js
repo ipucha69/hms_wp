@@ -180,7 +180,7 @@ const AddReport = () => {
                         setDoctor("");
                         setReportDate("");
                         setDescription("");
-                        toast.success("report is saved successfully");
+                        toast.success("Report is saved successfully");
                     })
                     .catch((error) => {
                         toast.error(error.message);
@@ -235,7 +235,7 @@ const AddReport = () => {
                     }}
                     onClick={(e) => registerReport(e)}
                 >
-                    AASIGN REPORT
+                    ADD REPORT
                 </Button>
             );
         }

@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Tabs, Tab, Box, Grid} from '@mui/material';
 // import { Verified } from '@mui/icons-material';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import { useParams } from "react-router-dom";
 // import { doc, getDoc } from "firebase/firestore";
 // import { db } from "../../App";
 
 import BloodDonorList from "./subComponents/BloodDonorList";
 import BloodBank from "./subComponents/BloodBank";
+import { selectUser } from "../../reducers/appSlice";
+import AddBloodDonor from "./subComponents/AddBloodDonor";
 
 
 function TabPanel(props) {
@@ -64,6 +66,9 @@ const Blood = () => {
       setValue(newValue);
     };
 
+    const user = useSelector(selectUser);
+
+
     const renderUserTabs = () => {
         return (
             <div>
@@ -87,6 +92,7 @@ const Blood = () => {
                 >
                     <Tab label="Blood Donor List" {...a11yProps(0)} />
                     <Tab label="Blood Bank" {...a11yProps(1)} />
+                    { user?.role !== "nurse" ? <Tab label="Add Blood Donor" {...a11yProps(2)} /> : null }
                 </Tabs>
               </Box>
                 <TabPanel value={value} index={0}>
@@ -95,6 +101,10 @@ const Blood = () => {
 
                 <TabPanel value={value} index={1}>
                   <BloodBank />
+                </TabPanel>
+
+                <TabPanel value={value} index={2}>
+                  <AddBloodDonor />
                 </TabPanel>
             </div>
         );

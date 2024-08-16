@@ -45,7 +45,7 @@ const columns = [
             title: "Last Donation Date",
             dataIndex: "lastDonationDate",
             key: "lastDonationDate",
-            render: (_, record) => <p>{moment(record.lastDonationDate.toDate()).format("YYYY-MM-DD HH:mm:ss")}</p>
+            render: (_, record) => <p>{ record.lastDonationDate ? moment(record.lastDonationDate.toDate()).format("YYYY-MM-DD HH:mm:ss") : "-"}</p>
         },
     ]
 

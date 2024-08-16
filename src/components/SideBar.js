@@ -185,6 +185,46 @@ const SideBar = ({ handleDrawerToggle }) => {
         }
     ];
 
+
+    const nurseLinks = [
+        {
+            id: 1,
+            name: "Dashboard",
+            icon: <HomeOutlined className="icon" />,
+            url: "/",
+            tooltip: "Dashboard",
+        },
+        {
+            id: 2,
+            name: "Patients",
+            icon: <PersonOff className="icon" />,
+            url: "/patients",
+            tooltip: "Patients",
+        },
+        {
+            id: 3,
+            name: "Bed",
+            icon: <BedSharp className="icon" />,
+            url: "/bed",
+            tooltip: "Bed",
+        },
+        {
+            id: 4,
+            name: "Blood Bank",
+            icon: <Bloodtype className="icon" />,
+            url: "/blood-bank",
+            tooltip: "Blood Bank",
+        },
+        {
+            id: 5,
+            name: "Report",
+            icon: <ReportOff className="icon" />,
+            url: "/report",
+            tooltip: "Report",
+        }
+    ];
+
+
     const handleClick = (id) => {
         if (submenuOpen!== id) {
             setSubmenuOpen(id);
@@ -193,7 +233,9 @@ const SideBar = ({ handleDrawerToggle }) => {
         }
     };
 
-    console.log(links);
+    console.log(links.length);
+    console.log(doctorLinks.length);
+
 
     return (
         <>
@@ -215,7 +257,7 @@ const SideBar = ({ handleDrawerToggle }) => {
                 <Toolbar />
                 <Box sx={{ overflow: "auto" }}>
                     <List>
-                        {doctorLinks.map((link) =>
+                        {nurseLinks.map((link) =>
                             link.children? (
                                 <React.Fragment key={link.id}>
                                     <SideNavListItem onClick={() => handleClick(link.id)} disablePadding>
