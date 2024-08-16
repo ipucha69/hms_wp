@@ -17,6 +17,10 @@ import IPDVisitPatient from "../components/patients/subComponents/IPDVisitPatien
 import Appointment from "../components/appointments/Appointment";
 import Blood from "../components/blood/Blood";
 import Report from "../components/report/Report"
+import Category from "../components/pharmacy/Category";
+import Medicine from "../components/pharmacy/Medicine";
+import Medication from "../components/pharmacy/Medication";
+import AddMedication from "../components/pharmacy/medications/AddMedication";
 
 const LoginElement = () => <Login />;
 
@@ -116,6 +120,33 @@ const ReportElement = () => (
     </AppLayout>
 );
 
+//pharmacy routes
+const CategoryElement = () => (
+    <AppLayout>
+        <Category />
+    </AppLayout>
+);
+
+
+const MedicineElement = () => (
+    <AppLayout>
+        <Medicine />
+    </AppLayout>
+);
+
+
+const MedicationElement = () => (
+    <AppLayout>
+        <Medication />
+    </AppLayout>
+);
+
+const EditMedicationElement = () => (
+    <AppLayout>
+        <AddMedication />
+    </AppLayout>
+);
+
 
 
 const App = () => {
@@ -145,6 +176,11 @@ const App = () => {
                     <Route path="/profile" element={<ProfileElement />} />
                     <Route path="/blood-bank" element={<BloodElement />} />
                     <Route path="/report" element={<ReportElement />} />
+
+                    <Route path="/medicine-category" element={<CategoryElement />} />
+                    <Route path="/manage-medicine" element={<MedicineElement />} />
+                    <Route path="/medication" element={<MedicationElement />} />
+                    <Route path="/medication/:prescriptionID" element={<EditMedicationElement />} />
                 </Route>
 
             </Routes>

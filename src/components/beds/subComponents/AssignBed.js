@@ -204,7 +204,7 @@ const AssignBed = () => {
                     }}
                     onClick={(e) => registerBed(e)}
                 >
-                    AASIGN BED ALLOTMENT
+                    ASSIGN BED ALLOTMENT
                 </Button>
             );
         }

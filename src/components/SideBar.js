@@ -24,7 +24,10 @@ import {
     HomeOutlined,
     MessageOutlined,
     Bloodtype,
-    ReportOff
+    ReportOff,
+    MedicalInformation,
+    Medication,
+    MedicalServices
 } from "@mui/icons-material";
 
 const drawerWidth = 237;
@@ -225,6 +228,38 @@ const SideBar = ({ handleDrawerToggle }) => {
     ];
 
 
+    const pharmacyLinks = [
+        {
+            id: 1,
+            name: "Dashboard",
+            icon: <HomeOutlined className="icon" />,
+            url: "/",
+            tooltip: "Dashboard",
+        },
+        {
+            id: 2,
+            name: "Category",
+            icon: <MedicalInformation className="icon" />,
+            url: "/medicine-category",
+            tooltip: "medicine-category",
+        },
+        {
+            id: 3,
+            name: "Medicine",
+            icon: <MedicalServices className="icon" />,
+            url: "/manage-medicine",
+            tooltip: "manage-medicine",
+        },
+        {
+            id: 4,
+            name: "Medication",
+            icon: <Medication className="icon" />,
+            url: "/medication",
+            tooltip: "medication",
+        },
+    ];
+
+
     const handleClick = (id) => {
         if (submenuOpen!== id) {
             setSubmenuOpen(id);
@@ -235,6 +270,7 @@ const SideBar = ({ handleDrawerToggle }) => {
 
     console.log(links.length);
     console.log(doctorLinks.length);
+    console.log(nurseLinks.length);
 
 
     return (
@@ -257,7 +293,7 @@ const SideBar = ({ handleDrawerToggle }) => {
                 <Toolbar />
                 <Box sx={{ overflow: "auto" }}>
                     <List>
-                        {nurseLinks.map((link) =>
+                        {pharmacyLinks.map((link) =>
                             link.children? (
                                 <React.Fragment key={link.id}>
                                     <SideNavListItem onClick={() => handleClick(link.id)} disablePadding>

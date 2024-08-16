@@ -5,6 +5,7 @@ import patientSlice from "../reducers/patientSlice";
 import bedSlice from "../reducers/bedSlice";
 import bloodSlice from "../reducers/bloodSlice";
 import reportSlice from "../reducers/reportSlice";
+import pharmacySlice from "../reducers/pharmacySlice";
 
 export const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
         blood: bloodSlice,
         doctor: doctorSlice,
         patient: patientSlice,
-        report: reportSlice
+        report: reportSlice,
+        pharmacy: pharmacySlice
     },
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
