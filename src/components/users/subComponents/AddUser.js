@@ -2,15 +2,13 @@ import React, { useState } from "react";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { db, auth } from "./../../../App";
+import { db, auth } from "../../../App";
 
 import Box from "@mui/material/Box";
 import Add from "@mui/icons-material/Add";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import { Button, FormControl, InputLabel } from "@mui/material";
+import { Autocomplete, Button } from "@mui/material";
 // import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { colors } from "../../../assets/utils/colors";
@@ -39,8 +37,10 @@ const specializations = [
     "Thoracic Surgery", "Transplantation", "Tropical Medicine", "Vascular Surgery"
 ];
 
+const roles = ["Doctor", "Nurse", "Pharmacist", "Accountant", "Lab Technician"];
 
-const AddDoctor = () => {
+
+const AddUser = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -52,13 +52,16 @@ const AddDoctor = () => {
     const [address, setAddress] = useState("");
     const [specialization, setSpecialization] = useState("");
     const [availability, setAvailability] = useState("");
+    const [role, setRole] = useState("");
     const [loading, setLoading] = useState(false);
 
     const userRegistration = async (e) => {
         e.preventDefault();
 
-        if (!firstName ||!lastName ||!email ||!specialization ||!availability || !phone || !address) {
+        if (!firstName ||!lastName ||!email || !phone || !address) {
             toast.error("Please fill in all fields.");
+        } else if (!role) {
+            toast.error("Please select role.");
         } else {
             try {
                 setLoading(true);
@@ -73,25 +76,34 @@ const AddDoctor = () => {
                         lastName,
                         email,
                         phone,
+                        role: role?.label,
                         address,
-                        specialization,
-                        availability,
+                        specialization: specialization.label? specialization.label: "",
+                        availability
                     }),
                     setDoc(doc(db, "userBucket", user.uid), {
                         firstName,
                         lastName,
                         email,
-                        role: 'doctor',
-                        id: user.uid,
+                        userID: user.uid,
+                        role,
                         phone,
                         address,
-                        specialization,
+                        specialization: specialization.label? specialization.label: "",
                         availability,
                     }),
                 ]);
 
-                toast.success("Doctor registered successfully!");
+                toast.success("User created successfully!");
                 setLoading(false);
+                setFirstName("");
+                setLastName("");
+                setEmail("");
+                setPhone("");
+                setAddress("");
+                setSpecialization("");
+                setAvailability("");
+                setRole("");
             } catch (error) {
                 console.error("Error creating doctor:", error);
                 toast.error("Failed to register doctor.");
@@ -127,10 +139,32 @@ const AddDoctor = () => {
                     }}
                     onClick={(e) => userRegistration(e)}
                 >
-                    ADD DOCTOR
+                    CREATE USER
                 </Button>
             );
         }
+    };
+
+    const sortedRoles = roles.map((item) => ({
+        id: item,
+        label: item,
+        data: item,
+    }));
+
+
+    const sortedSpecs = specializations.map((item) => ({
+        id: item,
+        label: item,
+        data: item,
+    }));
+
+    const roleOnChange = (e, value) => {
+        setRole(value);
+    };
+
+
+    const specOnChange = (e, value) => {
+        setSpecialization(value);
     };
 
     return (
@@ -140,7 +174,7 @@ const AddDoctor = () => {
                 className="h-10 w-56 bg-primaryColor cursor-pointer rounded-xl flex flex-row gap-1 justify-center text-white"
             >
                 <Add className="mt-2 py-0.5" />{" "}
-                <p className="py-2">Create New Doctor</p>
+                <p className="py-2">Create New User</p>
             </div>
 
             <Modal
@@ -151,7 +185,7 @@ const AddDoctor = () => {
             >
                 <Box sx={style} className="rounded-md">
                     <div>
-                        <h3 className="text-center text-xl py-4">Add New Doctor</h3>
+                        <h3 className="text-center text-xl py-4">Add User</h3>
                         <div>
                             <div className="w-full py-2 flex justify-center">
                                 <TextField
@@ -195,6 +229,7 @@ const AddDoctor = () => {
                                     className="w-[82%]"
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
+                                    type="number"
                                 />
                             </div>
                             <div className="w-full py-2 flex justify-center">
@@ -209,37 +244,51 @@ const AddDoctor = () => {
                                 />
                             </div>
                             <div className="w-full py-2 flex justify-center">
-                                <FormControl variant="outlined" size="small" className="w-[82%]">
-                                <InputLabel id="specialization-label">Specialization</InputLabel>
-                                    <Select
-                                        labelId="specialization-label"
-                                        id="specialization-select"
-                                        value={specialization}
-                                        label="Specialization"
-                                        size="small"
-                                        variant="outlined"
-                                        className="w-[100%]"
-                                        onChange={(e) => setSpecialization(e.target.value)}
-                                    >
-                                        {specializations.map((spec) => (
-                                            <MenuItem key={spec} value={spec}>
-                                                {spec}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </div>
-                            <div className="w-full py-2 flex justify-center">
-                                <TextField
-                                    id="outlined-basic"
-                                    label="Availability"
+                                <Autocomplete
+                                    id="combo-box-demo"
+                                    options={sortedRoles}
                                     size="small"
-                                    variant="outlined"
+                                    freeSolo
                                     className="w-[82%]"
-                                    value={availability}
-                                    onChange={(e) => setAvailability(e.target.value)}
+                                    value={role}
+                                    onChange={roleOnChange}
+                                    renderInput={(params) => (
+                                        <TextField {...params} label="Select role" />
+                                    )}
                                 />
                             </div>
+                            {
+                                role?.label === "Doctor" ?
+                                <div className="w-full py-2 flex justify-center">
+                                    <Autocomplete
+                                        id="combo-box-demo"
+                                        options={sortedSpecs}
+                                        size="small"
+                                        freeSolo
+                                        className="w-[82%]"
+                                        value={specialization}
+                                        onChange={specOnChange}
+                                        renderInput={(params) => (
+                                            <TextField {...params} label="Select Specialization" />
+                                        )}
+                                    />
+                                </div> : null
+                            }
+                            {
+                                role?.label === "Doctor" ?
+                                <div className="w-full py-2 flex justify-center">
+                                    <TextField
+                                        id="outlined-basic"
+                                        label="Availability"
+                                        size="small"
+                                        variant="outlined"
+                                        className="w-[82%]"
+                                        value={availability}
+                                        onChange={(e) => setAvailability(e.target.value)}
+                                    />
+                                </div> : null
+                            }
+
                             <div className="w-full py-2 pt-3 flex justify-center">
                                 {renderButton()}
                             </div>
@@ -251,4 +300,4 @@ const AddDoctor = () => {
     );
 };
 
-export default AddDoctor;
+export default AddUser;

@@ -4,7 +4,7 @@ import { collection, getDocs, query } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { Space, Input, Table} from "antd";
 
-import AddDoctor from "./subComponents/AddDoctor";
+import AddUser from "./subComponents/AddUser";
 import Description from "../common/Description";
 import { addDoctors, selectDoctors, addFilteredDoctors, selectFilteredDoctors } from "../../reducers/doctorSlice";
 
@@ -18,7 +18,7 @@ const columns = [
         render: (text) => <p>{text}</p>,
     },
     {
-        title: "Doctor Name",
+        title: "User Name",
         dataIndex: ["firstName", "lastName"],
         key: "name",
         render: (_, record) => <p>{record.firstName} {record.lastName}</p>,
@@ -27,6 +27,12 @@ const columns = [
         title: "Email",
         dataIndex: "email",
         key: "email",
+        render: (text) => <p>{text}</p>,
+    },
+    {
+        title: "Role",
+        dataIndex: "role",
+        key: "role",
         render: (text) => <p>{text}</p>,
     },
     {
@@ -58,7 +64,7 @@ const columns = [
     }
 ];
 
-const Doctor = () => {
+const Users = () => {
     const dispatch = useDispatch();
 
     const [pageLoading, setPageLoading] = useState(false);
@@ -104,8 +110,9 @@ const Doctor = () => {
     const handleOnSearchChange = () => {
         if (searchText) {
             const text = searchText.toLocaleLowerCase();
-            const searchedDoctors = doctors.filter((doctor) => {
-                return doctor?.firstName?.toLocaleLowerCase()?.includes(text);
+            const searchedDoctors = doctors.filter((user) => {
+                const name = `${user?.firstName} ${user?.lastName}`;
+                return name.toLocaleLowerCase()?.includes(text) || user?.role.toLocaleLowerCase()?.includes(text);
             });
     
             // Update state with filtered patients
@@ -150,14 +157,14 @@ const Doctor = () => {
                 <div>
                     <Space.Compact size="large">
                         <Search
-                            placeholder="Search patient name"
+                            placeholder="Search User"
                             allowClear
                             onChange={(e) => handleSearchText(e.target.value)}
                             onSearch={() => handleOnSearchChange()}
                         />
                     </Space.Compact>
                 </div>
-                <AddDoctor />
+                <AddUser />
             </div>
             <div className="pt-4">
                 {filters ? (
@@ -188,4 +195,4 @@ const Doctor = () => {
     );
 };
 
-export default Doctor;
+export default Users;

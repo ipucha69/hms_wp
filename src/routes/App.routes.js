@@ -3,12 +3,12 @@ import { Route, Routes } from "react-router-dom";
 import AppLayout from "../pages/layouts/AppLayout";
 import Login from "../pages/auth/Login";
 import Home from "../components/home/Home";
-import Doctor from "../components/doctors/Doctor";
+import Users from "../components/users/Users";
 import Schedule from "../components/schedules/Schedule";
 import Prescription from "../components/prescriptions/Prescription";
 import NoticeBoard from "../components/notices/NoticeBoard";
 import Profile from "../components/profile/Profile";
-import Patient from "../components/patients/Patient";
+// import Patient from "../components/patients/Patient";
 import Bed from "../components/beds/Bed";
 import Message from "../components/messages/Message";
 import HospitalActivities from "../components/hospitals/HospitalActivities";
@@ -21,6 +21,8 @@ import Category from "../components/pharmacy/Category";
 import Medicine from "../components/pharmacy/Medicine";
 import Medication from "../components/pharmacy/Medication";
 import AddMedication from "../components/pharmacy/medications/AddMedication";
+import PatientModules from "../components/patients/PatientModules";
+import Reception from "../components/patients/reception/Reception";
 
 const LoginElement = () => <Login />;
 
@@ -30,17 +32,24 @@ const DashboardElement = () => (
     </AppLayout>
 );
 
-const DoctorElement = () => (
+const UsersElement = () => (
     <AppLayout>
-        <Doctor />
+        <Users />
     </AppLayout>
 );
 
 const PatientElement = () => (
     <AppLayout>
-        <Patient />
+        <PatientModules />
+        {/* <Patient /> */}
     </AppLayout>
 );
+
+const ReceptionElement = () => (
+    <AppLayout>
+        <Reception />
+    </AppLayout>
+)
 
 const PatientQueueElement = () => (
     <AppLayout>
@@ -160,9 +169,11 @@ const App = () => {
 
                 <Route>
                     <Route path="/" element={<DashboardElement />} />
-                    <Route path="/doctor" element={<DoctorElement />} />
+                    <Route path="/users" element={<UsersElement />} />
 
                     <Route path="/patients" element={<PatientElement />} />
+                    <Route path="/patients/reception" element={<ReceptionElement />} />
+
                     <Route path="/patients-queue" element={<PatientQueueElement />} />
                     <Route path="/patients-queue/:patientID" element={<PatientQueueVisitElement />} />
 

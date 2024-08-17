@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../../App";
+import { db } from "../../../App";
 import { collection, getDocs, query } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { Space, Input, Table} from "antd";
 
-import { selectPatients, addPatients, addFilteredPatients, selectFilteredPatients } from "../../reducers/patientSlice";
-import AddPatientReception from "./reception/AddPatientReception";
-import AddPatientInfo from "./subComponents/AddPatientInfo";
-import AssignDoctorToPatient from "./subComponents/AssignDoctorToPatient";
-import EditPatient from "./subComponents/EditPatient";
-import { useNavigate } from "react-router-dom";
-import { Queue } from "@mui/icons-material";
+// import { useNavigate } from "react-router-dom";
+// import { Queue } from "@mui/icons-material";
+
+import { selectPatients, addPatients, addFilteredPatients, selectFilteredPatients } from "../../../reducers/patientSlice";
+// import AddPatientReception from "./AddPatientReception";
+// import AddPatientInfo from "../subComponents/AddPatientInfo";
+import AssignDoctorToPatient from "../subComponents/AssignDoctorToPatient";
+import EditPatient from "./EditPatient";
 
 
 const { Search } = Input;
@@ -84,9 +85,9 @@ const columns = [
     },
 ];
 
-const Patient = () => {
+const PatientList = () => {
   const dispatch = useDispatch();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
   const [pageLoading, setPageLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -125,6 +126,7 @@ const Patient = () => {
     }, [dispatch]);
 
     const patients = useSelector(selectPatients);
+    console.log(patients)
 
     const sortedPatients = patients
     .slice()
@@ -168,9 +170,9 @@ const Patient = () => {
       .map((patient, index) => ({ ...patient, key: index + 1 }));
 
 
-    const handleQueuePatient = () => {
-        navigate('/patients-queue');
-    }
+    // const handleQueuePatient = () => {
+    //     navigate('/patients-queue');
+    // }
   
 
     return (
@@ -193,15 +195,15 @@ const Patient = () => {
                     />
                 </Space.Compact>
             </div>
-            <AddPatientReception />
-            <AddPatientInfo />
+            {/* <AddPatientReception />
+            <AddPatientInfo /> */}
             {/* <PatientQueue /> */}
-            <div onClick={() => handleQueuePatient()}
+            {/* <div onClick={() => handleQueuePatient()}
                 className="h-10 w-56 bg-primaryColor cursor-pointer rounded-xl flex flex-row gap-1 justify-center text-white"
             >
                 <Queue className="mt-2 py-0.5" />{" "}
                 <p className="py-2">Patients Queue</p>
-            </div>
+            </div> */}
         </div>
         <div className="pt-4">
             {filters ? (
@@ -232,4 +234,4 @@ const Patient = () => {
     );
 };
 
-export default Patient;
+export default PatientList;

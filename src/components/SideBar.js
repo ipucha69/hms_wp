@@ -4,7 +4,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Drawer from "@mui/material/Drawer";
 import { colors } from "../assets/utils/colors";
 import {
+    Backdrop,
     Box,
+    CircularProgress,
     List,
     ListItem,
     ListItemButton,
@@ -29,6 +31,8 @@ import {
     Medication,
     MedicalServices
 } from "@mui/icons-material";
+import { useSelector } from "react-redux";
+import { selectUserProfile } from "../reducers/appSlice";
 
 const drawerWidth = 237;
 
@@ -61,7 +65,9 @@ const SideNavListItem = styled(ListItem)(({ theme }) => ({
 
 const SideBar = ({ handleDrawerToggle }) => {
     const [open] = React.useState(false);
-    const [submenuOpen, setSubmenuOpen] = React.useState(null);
+
+    const profile = useSelector(selectUserProfile);
+
 
     const links = [
         {
@@ -73,67 +79,67 @@ const SideBar = ({ handleDrawerToggle }) => {
         },
         {
             id: 2,
-            name: "Doctors",
-            icon: <PersonPin className="icon" />,
-            url: "/doctor",
-            tooltip: "Doctor",
-        },
-        {
-            id: 3,
             name: "Patients",
             icon: <PersonOff className="icon" />,
             url: "/patients",
             tooltip: "Patients",
         },
         {
-            id: 4,
+            id: 3,
             name: "Schedule",
             icon: <Timeline className="icon" />,
             url: "/schedule",
             tooltip: "Schedule",
         },
         {
-            id: 5,
+            id: 4,
             name: "Appointment",
             icon: <MeetingRoom className="icon" />,
             url: "/appointment",
             tooltip: "Appointment",
         },
         {
-            id: 6,
+            id: 5,
             name: "Prescription",
             icon: <PrecisionManufacturingSharp className="icon" />,
             url: "/prescription",
             tooltip: "Prescription",
         },
         {
-            id: 7,
+            id: 6,
             name: "Notice Board",
             icon: <NotesOutlined className="icon" />,
             url: "/notice-board",
             tooltip: "Notice Board",
         },
         {
-            id: 8,
+            id: 7,
             name: "Bed",
             icon: <BedSharp className="icon" />,
             url: "/bed",
             tooltip: "Bed",
         },
         {
-            id: 9,
+            id: 8,
             name: "Hospital Activities",
             icon: <LocalHospitalOutlined className="icon" />,
             url: "/hospital-activities",
             tooltip: "Hospital Activities",
         },
         {
-            id: 10,
+            id: 9,
             name: "Messages",
             icon: <MessageOutlined className="icon" />,
             url: "/message",
             tooltip: "Messages",
-        }
+        },
+        {
+            id: 10,
+            name: "Users",
+            icon: <PersonPin className="icon" />,
+            url: "/users",
+            tooltip: "Users",
+        },
     ];
 
     const doctorLinks = [
@@ -260,85 +266,41 @@ const SideBar = ({ handleDrawerToggle }) => {
     ];
 
 
-    const handleClick = (id) => {
-        if (submenuOpen!== id) {
-            setSubmenuOpen(id);
-        } else {
-            setSubmenuOpen(null);
-        }
-    };
+    if (!profile) {
+        return (
+            <div>
+                <Backdrop
+                    sx={{ color: "#000", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                >
+                    <CircularProgress color="inherit" />
+                </Backdrop>
+            </div>
+        );
+    }
 
-    console.log(links.length);
-    console.log(doctorLinks.length);
-    console.log(nurseLinks.length);
 
-
-    return (
-        <>
-            <Drawer
-                variant="permanent"
-                open={open}
-                sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    display: { xs: "none", sm: "block" },
-                    [`&.MuiDrawer-paper`]: {
+    if (profile?.role === "Admin") {
+        return (
+            <>
+                <Drawer
+                    variant="permanent"
+                    open={open}
+                    sx={{
                         width: drawerWidth,
-                        boxSizing: "border-box",
-                        whiteSpace: "nowrap",
-                    },
-                    [`&.MuiPaper-root`]: { backgroundColor: colors.default },
-                }}
-            >
-                <Toolbar />
-                <Box sx={{ overflow: "auto" }}>
-                    <List>
-                        {pharmacyLinks.map((link) =>
-                            link.children? (
-                                <React.Fragment key={link.id}>
-                                    <SideNavListItem onClick={() => handleClick(link.id)} disablePadding>
-                                        <ListItemButton>
-                                            <ListItemIcon>{link.icon}</ListItemIcon>
-                                            <ListItemText primary={link.name} />
-                                        </ListItemButton>
-                                    </SideNavListItem>
-                                    {submenuOpen === link.id && (
-                                        <List>
-                                            {link.children.map(childLink => (
-                                                <NavLink
-                                                    style={{ color: "inherit", textDecoration: "inherit" }}
-                                                    to={childLink.url}
-                                                    key={childLink.id}
-                                                >
-                                                    {({ isActive }) => (
-                                                        <SideNavListItem
-                                                            disablePadding
-                                                            sx={{
-                                                                display: "block",
-                                                                my: 2,
-                                                                bgcolor: isActive? 'green' : undefined,
-                                                                "&:hover": {
-                                                                    transition: "all ease-in-out 0.3s",
-                                                                    "&::before": {
-                                                                        transition: "all ease-in-out 0.3s",
-                                                                        height: "100%",
-                                                                        bottom: 0,
-                                                                    },
-                                                                },
-                                                            }}
-                                                        >
-                                                            <ListItemButton>
-                                                                <ListItemIcon>{childLink.icon}</ListItemIcon>
-                                                                <ListItemText primary={childLink.name} />
-                                                            </ListItemButton>
-                                                        </SideNavListItem>
-                                                    )}
-                                                </NavLink>
-                                            ))}
-                                        </List>
-                                    )}
-                                </React.Fragment>
-                            ) : (
+                        flexShrink: 0,
+                        display: { xs: "none", sm: "block" },
+                        [`&.MuiDrawer-paper`]: {
+                            width: drawerWidth,
+                            boxSizing: "border-box",
+                            whiteSpace: "nowrap",
+                        },
+                        [`&.MuiPaper-root`]: { backgroundColor: colors.default },
+                    }}
+                >
+                    <Toolbar />
+                    <Box sx={{ overflow: "auto" }}>
+                        <List>
+                            {links.map((link) =>
                                 <NavLink
                                     style={{ color: "inherit", textDecoration: "inherit" }}
                                     to={link.url}
@@ -370,13 +332,196 @@ const SideBar = ({ handleDrawerToggle }) => {
                                     </SideNavListItem>
                                     )}
                                 </NavLink>
-                            )
-                        )}
-                    </List>
-                </Box>
-            </Drawer>
-        </>
-    );
+                            )}
+                        </List>
+                    </Box>
+                </Drawer>
+            </>
+        );
+    }
+
+    if (profile?.role === "Doctor") {
+        return (
+            <>
+                <Drawer
+                    variant="permanent"
+                    open={open}
+                    sx={{
+                        width: drawerWidth,
+                        flexShrink: 0,
+                        display: { xs: "none", sm: "block" },
+                        [`&.MuiDrawer-paper`]: {
+                            width: drawerWidth,
+                            boxSizing: "border-box",
+                            whiteSpace: "nowrap",
+                        },
+                        [`&.MuiPaper-root`]: { backgroundColor: colors.default },
+                    }}
+                >
+                    <Toolbar />
+                    <Box sx={{ overflow: "auto" }}>
+                        <List>
+                            {doctorLinks.map((link) =>
+                                <NavLink
+                                    style={{ color: "inherit", textDecoration: "inherit" }}
+                                    to={link.url}
+                                    key={link.id}
+                                >
+                                    {({ isActive }) => (
+                                    <SideNavListItem
+                                        disablePadding
+                                        sx={{
+                                            display: "block",
+                                            my: 2,
+                                            bgcolor: isActive && {
+                                                background: 'green',
+                                            },
+                                            "&:hover": !isActive && {
+                                                transition: "all ease-in-out 0.3s",
+                                                "&::before": {
+                                                    transition: "all ease-in-out 0.3s",
+                                                    height: "100%",
+                                                    bottom: 0,
+                                                },
+                                            },
+                                        }}
+                                    >
+                                        <ListItemButton>
+                                            <ListItemIcon>{link.icon}</ListItemIcon>
+                                            <ListItemText primary={link.name} />
+                                        </ListItemButton>
+                                    </SideNavListItem>
+                                    )}
+                                </NavLink>
+                            )}
+                        </List>
+                    </Box>
+                </Drawer>
+            </>
+        );
+    }
+
+    if (profile?.role === "Nurse") {
+        return (
+            <>
+                <Drawer
+                    variant="permanent"
+                    open={open}
+                    sx={{
+                        width: drawerWidth,
+                        flexShrink: 0,
+                        display: { xs: "none", sm: "block" },
+                        [`&.MuiDrawer-paper`]: {
+                            width: drawerWidth,
+                            boxSizing: "border-box",
+                            whiteSpace: "nowrap",
+                        },
+                        [`&.MuiPaper-root`]: { backgroundColor: colors.default },
+                    }}
+                >
+                    <Toolbar />
+                    <Box sx={{ overflow: "auto" }}>
+                        <List>
+                            {nurseLinks.map((link) =>
+                                <NavLink
+                                    style={{ color: "inherit", textDecoration: "inherit" }}
+                                    to={link.url}
+                                    key={link.id}
+                                >
+                                    {({ isActive }) => (
+                                    <SideNavListItem
+                                        disablePadding
+                                        sx={{
+                                            display: "block",
+                                            my: 2,
+                                            bgcolor: isActive && {
+                                                background: 'green',
+                                            },
+                                            "&:hover": !isActive && {
+                                                transition: "all ease-in-out 0.3s",
+                                                "&::before": {
+                                                    transition: "all ease-in-out 0.3s",
+                                                    height: "100%",
+                                                    bottom: 0,
+                                                },
+                                            },
+                                        }}
+                                    >
+                                        <ListItemButton>
+                                            <ListItemIcon>{link.icon}</ListItemIcon>
+                                            <ListItemText primary={link.name} />
+                                        </ListItemButton>
+                                    </SideNavListItem>
+                                    )}
+                                </NavLink>
+                            )}
+                        </List>
+                    </Box>
+                </Drawer>
+            </>
+        );
+    }
+
+    if (profile?.role === "Pharmacist") {
+        return (
+            <>
+                <Drawer
+                    variant="permanent"
+                    open={open}
+                    sx={{
+                        width: drawerWidth,
+                        flexShrink: 0,
+                        display: { xs: "none", sm: "block" },
+                        [`&.MuiDrawer-paper`]: {
+                            width: drawerWidth,
+                            boxSizing: "border-box",
+                            whiteSpace: "nowrap",
+                        },
+                        [`&.MuiPaper-root`]: { backgroundColor: colors.default },
+                    }}
+                >
+                    <Toolbar />
+                    <Box sx={{ overflow: "auto" }}>
+                        <List>
+                            {pharmacyLinks.map((link) =>
+                                <NavLink
+                                    style={{ color: "inherit", textDecoration: "inherit" }}
+                                    to={link.url}
+                                    key={link.id}
+                                >
+                                    {({ isActive }) => (
+                                    <SideNavListItem
+                                        disablePadding
+                                        sx={{
+                                            display: "block",
+                                            my: 2,
+                                            bgcolor: isActive && {
+                                                background: 'green',
+                                            },
+                                            "&:hover": !isActive && {
+                                                transition: "all ease-in-out 0.3s",
+                                                "&::before": {
+                                                    transition: "all ease-in-out 0.3s",
+                                                    height: "100%",
+                                                    bottom: 0,
+                                                },
+                                            },
+                                        }}
+                                    >
+                                        <ListItemButton>
+                                            <ListItemIcon>{link.icon}</ListItemIcon>
+                                            <ListItemText primary={link.name} />
+                                        </ListItemButton>
+                                    </SideNavListItem>
+                                    )}
+                                </NavLink>
+                            )}
+                        </List>
+                    </Box>
+                </Drawer>
+            </>
+        );
+    }
 };
 
 export default SideBar;
