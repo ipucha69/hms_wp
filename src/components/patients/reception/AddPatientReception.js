@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, Checkbox, FormControl, FormControlLabel, InputLabel } from "@mui/material";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { colors } from "../../../assets/utils/colors";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "../../../App";
 
 // const style = {
 //     position: "absolute",
@@ -46,8 +48,48 @@ const AddPatientReception = () => {
     const [checkedChronics, setCheckedChronics] = useState([]);
     const [checkedAllergies, setCheckedAllergies] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [age, setAge] = useState(""); // State to hold the calculated age
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
+
+    useEffect(() => {
+        const today = new Date();
+        let birthDate = new Date(dob);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+    
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        setAge(age);
+    }, [dob]);
+
+
+    const generateUniqueTimestamp = () => {
+        // Get the current time in milliseconds
+        const currentTimeMillis = Date.now();
+        
+        // Convert to seconds
+        const currentTimeSeconds = Math.floor(currentTimeMillis / 1000);
+        
+        return currentTimeSeconds;
+    }
+    
+    const getCurrentYear = () => {
+        return new Date().getFullYear();
+    }
+
+
+    const createMRN = () => {
+        const timestamp = generateUniqueTimestamp();
+        const year = getCurrentYear();
+        
+        // Format the MRN as 'timestamp/Year'
+        const mrn = `${timestamp}-${year}`;
+        
+        return mrn;
+    }
+    
 
     const userRegistration = async (e) => {
         e.preventDefault();
@@ -55,10 +97,62 @@ const AddPatientReception = () => {
         if (!firstName.trim() ||!lastName.trim() ||!email.trim() ||!phone.trim() ||!address.trim() ||!gender.trim() ||!dob.trim()) {
             toast.error("Please fill in all required fields.");
         } else {
-            // Start registration
-            dispatch();
-            console.log('Registering patient...');
-            setLoading(true);
+            try {
+                
+                const mrn = createMRN();
+                const docRef = doc(db, "patientsBucket", mrn);
+                const docSnap = await getDoc(docRef);
+            
+                if (docSnap.exists()) {
+                    toast.info("Try Again");
+                } else {
+                    setLoading(true);
+                    await setDoc(doc(db, "patientsBucket", mrn), {
+                        firstName,middleName,lastName,email,phone,address,gender,dob,status,next_of_Kin,kin_phone,kin_address,goverment_personnel,age,
+                        employment_status,education_status,relationship,kin_status,sponsorship,reception_department,checkedChronics,checkedAllergies,
+                        mrn, patientID: mrn, bloodGroup: ''
+                    })
+                    .then(async() => {
+                        await setDoc(doc(db, "patients", mrn, "public", "info"), {
+                            firstName,middleName,lastName,email,phone,address,gender,dob,status,next_of_Kin,kin_phone,kin_address,goverment_personnel,age,
+                            employment_status,education_status,relationship,kin_status,sponsorship,reception_department,checkedChronics,checkedAllergies,
+                            mrn, patientID: mrn, bloodGroup: ''
+                        })
+                        toast.success("updated successfull");
+                        setFirstName("");
+                        setMiddleName("");
+                        setLastName("");
+                        setEmail("");
+                        setPhone("");
+                        setAddress("");
+                        setGender("");
+                        setDob("");
+                        setStatus("");
+                        setNext_Kin("");
+                        setKin_Phone("");
+                        setKin_Address("");
+                        setGov_personnel("");
+                        setEmp_status("");
+                        setEdu_status("");
+                        setRelationship("");
+                        setKin_Status("");
+                        setSponsorship("");
+                        setRecep_department("");
+                        setCheckedChronics("");
+                        setCheckedAllergies("");
+                        setAge("");
+                        setLoading(false);
+    
+                    })
+                    .catch((error) => {
+                        toast.error(error.message);
+                        setLoading(false);
+                    })
+                }
+            } catch (error) {
+                toast.error(error.message);
+                setLoading(false);
+            }
         }
     };
 
@@ -169,6 +263,7 @@ const AddPatientReception = () => {
                                 />
                             </div>
                         </div>
+                        
                         <div className="flex flex-row gap-8 justify-end items-end py-4 px-2">
                             <div className="w-full py-2 flex justify-center">
                                 <TextField

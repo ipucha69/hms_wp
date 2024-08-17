@@ -37,22 +37,35 @@ const PatientModules = () => {
                 </div>
             ) : null}
             <div className="flex flex-row gap-8 justify-center items-center py-4 px-2">
-                <Box 
-                    sx={{ 
-                        display: 'flex', 
-                        flexDirection: 'column',
-                        "&:hover": {
-                            background: `${colors.bgColor6}`,
-                            cursor: 'pointer',
-
-                        },
-                    }} 
-                    onClick={() => handleReception()}
-                >
+                <Box sx={{ display: 'flex', width: '20%', flexDirection: 'column',"&:hover": {background: `${colors.bgColor6}`,cursor: 'pointer',},}} onClick={() => handleReception()}>
                     <Card variant="outlined" sx={{ borderRadius: 1, backgroundColor: colors.primary, padding: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box sx={{ flexGrow: 1, marginLeft: 2 }}>
                             <Typography variant="body2" gutterBottom sx={{ color: '#fff' }}>
                                 Reception
+                            </Typography>
+                        </Box>
+                        <Box sx={{ alignSelf: 'center' }}>
+                            <PersonAdd className="mt-2 py-0.5" sx={{ color: '#fff' }}/>
+                        </Box>
+                    </Card>
+                </Box>
+                <Box sx={{ display: 'flex', width: '20%', flexDirection: 'column',"&:hover": {background: `${colors.bgColor6}`,cursor: 'pointer',},}} onClick={() => handleReception()}>
+                    <Card variant="outlined" sx={{ borderRadius: 1, backgroundColor: colors.primary, padding: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Box sx={{ flexGrow: 1, marginLeft: 2 }}>
+                            <Typography variant="body2" gutterBottom sx={{ color: '#fff' }}>
+                                IPD
+                            </Typography>
+                        </Box>
+                        <Box sx={{ alignSelf: 'center' }}>
+                            <PersonAdd className="mt-2 py-0.5" sx={{ color: '#fff' }}/>
+                        </Box>
+                    </Card>
+                </Box>
+                <Box sx={{ display: 'flex', width: '20%', flexDirection: 'column',"&:hover": {background: `${colors.bgColor6}`,cursor: 'pointer',},}} onClick={() => handleReception()}>
+                    <Card variant="outlined" sx={{ borderRadius: 1, backgroundColor: colors.primary, padding: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Box sx={{ flexGrow: 1, marginLeft: 2 }}>
+                            <Typography variant="body2" gutterBottom sx={{ color: '#fff' }}>
+                                OPD
                             </Typography>
                         </Box>
                         <Box sx={{ alignSelf: 'center' }}>
