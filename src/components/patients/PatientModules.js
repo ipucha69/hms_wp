@@ -1,4 +1,4 @@
-import { PersonAdd } from '@mui/icons-material'
+import { PersonAdd, PersonOff, PersonPinSharp } from '@mui/icons-material'
 import { Box, Card, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
@@ -27,6 +27,10 @@ const PatientModules = () => {
         navigate("/patients/reception");
     };
 
+    const handleOPD = () => {
+        navigate("/patients/opd");
+    };
+
     return (
         <div className="relative">
             {pageLoading ? (
@@ -49,7 +53,7 @@ const PatientModules = () => {
                         </Box>
                     </Card>
                 </Box>
-                <Box sx={{ display: 'flex', width: '20%', flexDirection: 'column',"&:hover": {background: `${colors.bgColor6}`,cursor: 'pointer',},}} onClick={() => handleReception()}>
+                <Box sx={{ display: 'flex', width: '20%', flexDirection: 'column',"&:hover": {background: `${colors.bgColor6}`,cursor: 'pointer',},}}>
                     <Card variant="outlined" sx={{ borderRadius: 1, backgroundColor: colors.primary, padding: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box sx={{ flexGrow: 1, marginLeft: 2 }}>
                             <Typography variant="body2" gutterBottom sx={{ color: '#fff' }}>
@@ -57,11 +61,11 @@ const PatientModules = () => {
                             </Typography>
                         </Box>
                         <Box sx={{ alignSelf: 'center' }}>
-                            <PersonAdd className="mt-2 py-0.5" sx={{ color: '#fff' }}/>
+                            <PersonPinSharp className="mt-2 py-0.5" sx={{ color: '#fff' }}/>
                         </Box>
                     </Card>
                 </Box>
-                <Box sx={{ display: 'flex', width: '20%', flexDirection: 'column',"&:hover": {background: `${colors.bgColor6}`,cursor: 'pointer',},}} onClick={() => handleReception()}>
+                <Box sx={{ display: 'flex', width: '20%', flexDirection: 'column',"&:hover": {background: `${colors.bgColor6}`,cursor: 'pointer',},}} onClick={() => handleOPD()}>
                     <Card variant="outlined" sx={{ borderRadius: 1, backgroundColor: colors.primary, padding: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box sx={{ flexGrow: 1, marginLeft: 2 }}>
                             <Typography variant="body2" gutterBottom sx={{ color: '#fff' }}>
@@ -69,7 +73,7 @@ const PatientModules = () => {
                             </Typography>
                         </Box>
                         <Box sx={{ alignSelf: 'center' }}>
-                            <PersonAdd className="mt-2 py-0.5" sx={{ color: '#fff' }}/>
+                            <PersonOff className="mt-2 py-0.5" sx={{ color: '#fff' }}/>
                         </Box>
                     </Card>
                 </Box>

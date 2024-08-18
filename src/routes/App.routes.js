@@ -23,6 +23,7 @@ import Medication from "../components/pharmacy/Medication";
 import AddMedication from "../components/pharmacy/medications/AddMedication";
 import PatientModules from "../components/patients/PatientModules";
 import Reception from "../components/patients/reception/Reception";
+import OutPatient from "../components/patients/opd/OutPatient";
 
 const LoginElement = () => <Login />;
 
@@ -48,6 +49,12 @@ const PatientElement = () => (
 const ReceptionElement = () => (
     <AppLayout>
         <Reception />
+    </AppLayout>
+)
+
+const OPDElement = () => (
+    <AppLayout>
+        <OutPatient />
     </AppLayout>
 )
 
@@ -173,6 +180,7 @@ const App = () => {
 
                     <Route path="/patients" element={<PatientElement />} />
                     <Route path="/patients/reception" element={<ReceptionElement />} />
+                    <Route path="/patients/opd" element={<OPDElement />} />
 
                     <Route path="/patients-queue" element={<PatientQueueElement />} />
                     <Route path="/patients-queue/:patientID" element={<PatientQueueVisitElement />} />

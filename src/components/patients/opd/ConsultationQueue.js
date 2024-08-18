@@ -8,10 +8,7 @@ import { Space, Input, Table} from "antd";
 // import { Queue } from "@mui/icons-material";
 
 import { selectPatients, addPatients, addFilteredPatients, selectFilteredPatients } from "../../../reducers/patientSlice";
-// import AddPatientReception from "./AddPatientReception";
-// import AddPatientInfo from "../subComponents/AddPatientInfo";
-import AssignDoctorToPatient from "./AssignDoctorToPatient";
-import EditPatient from "./EditPatient";
+
 import moment from "moment";
 
 
@@ -71,28 +68,10 @@ const columns = [
         dataIndex: "created_at",
         key: "created_at",
         render: (_, record) => <p>{moment(record.created_at.toDate()).format("YYYY-MM-DD HH:mm:ss")}</p>
-    },
-    {
-        title: "Patient Queue",
-        key: "view",
-        render: (_, patient) => (
-        <p className="flex flex-row gap-1 justify-start">
-            <AssignDoctorToPatient patient={patient} title={"Assign Clinic To Patient"} />
-        </p>
-        ),
-    },
-    {
-        title: "Actions",
-        key: "action",
-        render: (_, patient) => (
-            <div className="flex flex-row gap-1 justify-start">
-                <EditPatient patient={patient} />
-            </div>
-        ),
-    },
+    }
 ];
 
-const PatientList = () => {
+const ConsultationQueue = () => {
   const dispatch = useDispatch();
     // const navigate = useNavigate();
 
@@ -107,7 +86,7 @@ const PatientList = () => {
             setPageLoading(true);
 
             const q = query(
-                collection(db, "patientsBucket"),
+                collection(db, "patientsQueue"),
             );
 
             const querySnapshot = await getDocs(q);
@@ -146,6 +125,7 @@ const PatientList = () => {
                 return item?.patientID?.toLocaleLowerCase()?.includes(text) || name.toLocaleLowerCase()?.includes(text);
             });
     
+            // Update state with filtered patients
             dispatch(addFilteredPatients(searchedItems));
             setFilters(true);
         } else {
@@ -199,6 +179,15 @@ const PatientList = () => {
                     />
                 </Space.Compact>
             </div>
+            {/* <AddPatientReception />
+            <AddPatientInfo /> */}
+            {/* <PatientQueue /> */}
+            {/* <div onClick={() => handleQueuePatient()}
+                className="h-10 w-56 bg-primaryColor cursor-pointer rounded-xl flex flex-row gap-1 justify-center text-white"
+            >
+                <Queue className="mt-2 py-0.5" />{" "}
+                <p className="py-2">Patients Queue</p>
+            </div> */}
         </div>
         <div className="pt-4">
             {filters ? (
@@ -229,4 +218,4 @@ const PatientList = () => {
     );
 };
 
-export default PatientList;
+export default ConsultationQueue;

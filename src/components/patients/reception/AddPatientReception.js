@@ -110,13 +110,13 @@ const AddPatientReception = () => {
                     await setDoc(doc(db, "patientsBucket", mrn), {
                         firstName,middleName,lastName,email,phone,address,gender,dob,status,next_of_Kin,kin_phone,kin_address,goverment_personnel,age,
                         employment_status,education_status,relationship,kin_status,sponsorship,reception_department,checkedChronics,checkedAllergies,
-                        mrn, patientID: mrn, bloodGroup: ''
+                        mrn, patientID: mrn, bloodGroup: '', created_at: new Date()
                     })
                     .then(async() => {
                         await setDoc(doc(db, "patients", mrn, "public", "info"), {
                             firstName,middleName,lastName,email,phone,address,gender,dob,status,next_of_Kin,kin_phone,kin_address,goverment_personnel,age,
                             employment_status,education_status,relationship,kin_status,sponsorship,reception_department,checkedChronics,checkedAllergies,
-                            mrn, patientID: mrn, bloodGroup: ''
+                            mrn, patientID: mrn, bloodGroup: '', created_at: new Date()
                         })
                         toast.success("updated successfull");
                         setFirstName("");

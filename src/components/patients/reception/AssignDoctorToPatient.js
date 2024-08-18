@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../../App";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
 // import moment from "moment";
 
-import { IconButton } from "@mui/material";
+import { Autocomplete, IconButton, TextField } from "@mui/material";
 import { RemoveRedEye } from "@mui/icons-material";
 import { Modal } from "antd";
 
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import { Button, FormControl, InputLabel } from "@mui/material";
+import { Button } from "@mui/material";
 
 import { colors } from "../../../assets/utils/colors";
 import { addDoctors, selectDoctors } from "../../../reducers/doctorSlice";
+import toast from "react-hot-toast";
 
 
 const specializations = [
@@ -30,6 +29,15 @@ const specializations = [
     "Thoracic Surgery", "Transplantation", "Tropical Medicine", "Vascular Surgery"
 ];
 
+const clinics = [
+    { id: '1', label: 'OPD'},
+    { id: '2', label: 'CTC'},
+    { id: '3', label: 'DENTAL'},
+    { id: '4', label: 'EYE'},
+    { id: '5', label: 'TB'},
+    { id: '6', label: 'VCT'},
+]
+
 const AssignDoctorToPatient = ({ patient, title }) => {
 
     const dispatch = useDispatch();
@@ -37,8 +45,9 @@ const AssignDoctorToPatient = ({ patient, title }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(false);
-    const [specialization, setSpecialization] = useState('');
-    const [doctor, setDoctor] = useState({});
+    const [specialization, setSpecialization] = useState("");
+    const [doctor, setDoctor] = useState("");
+    const [clinic, setClinic] = useState("");
 
 
     useEffect(() => {
@@ -49,6 +58,7 @@ const AssignDoctorToPatient = ({ patient, title }) => {
 
             const q = query(
                 collection(db, "userBucket"),
+                where("role", "==", "Doctor")
             );
 
             const querySnapshot = await getDocs(q);
@@ -62,10 +72,7 @@ const AssignDoctorToPatient = ({ patient, title }) => {
                 dispatch(addDoctors(patientsArray));
                 setPageLoading(false);
             } else {
-                dispatch(addDoctors([
-                    {firstName: 'Rashid', lastName: 'Iddi', specialization: 'Oncology'},
-                    {name: 'Luqman', lastName: 'Humud', specialization: 'Pulmonology'}
-                ]));
+                dispatch(addDoctors([]));
                 setPageLoading(false);
             }
         };
@@ -74,10 +81,9 @@ const AssignDoctorToPatient = ({ patient, title }) => {
     }, [dispatch]);
 
     const doctorsArray = useSelector(selectDoctors);
-    const doctors = doctorsArray.filter(doctor => doctor.specialization === specialization);
+    const doctors = doctorsArray.filter(doctor => doctor.specialization === specialization.label);
 
-    console.log(doctorsArray);
-    console.log(doctors);
+    console.log(pageLoading, doctors);
 
 
     const showModal = () => {
@@ -91,10 +97,31 @@ const AssignDoctorToPatient = ({ patient, title }) => {
     };
 
 
-    const AssignDoctor = () => {
-        setLoading(true);
-        console.log('assigning doctor ..... for :', patient.email);
-        setLoading(false);
+    const AssignDoctor = async () => {
+        if (!clinic) {
+            toast.error("Please select clinic");
+        } else {
+            try {
+                setLoading(true);
+                await setDoc(doc(db, "patientsQueue", patient.patientID), {
+                    clinicID: clinic.id,
+                    clinic: clinic.label,
+                    specialization: specialization ? specialization.label: "",
+                    doctorName: doctor ? doctor.label: "",
+                    doctorID: doctor ? doctor.id: "",
+                    ...patient
+                })
+
+                setLoading(false);
+                setDoctor("");
+                setClinic("");
+                setSpecialization("");
+                toast.success("Clinic is assigned successfully");
+            } catch (error) {
+                toast.error(error.message);
+                setLoading(false);
+            }
+        }
     }
 
 
@@ -131,15 +158,40 @@ const AssignDoctorToPatient = ({ patient, title }) => {
         }
     };
 
+
+    const sortedDoctors = doctors.map((item) => ({
+        id: item.userID,
+        label: `${item.firstName} ${item.lastName}`,
+        data: item,
+    }));
+
+    const doctorOnChange = (e, value) => {
+        setDoctor(value);
+    };
+
+    const sortedSpecs = specializations.map((item) => ({
+        id: item,
+        label: item,
+        data: item,
+    }));
+
+    const specOnChange = (e, value) => {
+        setSpecialization(value);
+    };
+
+    const clinicOnChange = (e, value) => {
+        setClinic(value)
+    }
+
     return (
         <div className="relative">
-            {pageLoading ? (
+            {/* {pageLoading ? (
                 <div className="py-4 w-full flex justify-center items-center overflow-hidden">
                 <div className="absolute bg-white bg-opacity-70 z-10 min-h-screen w-full flex items-center justify-center">
                     <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-300 h-12 w-12 mb-4"></div>
                 </div>
                 </div>
-            ) : null}
+            ) : null} */}
             <IconButton variant="outlined" onClick={showModal}>
                 <RemoveRedEye className="text-[#0A365C] cursor-pointer" />
             </IconButton>
@@ -157,48 +209,48 @@ const AssignDoctorToPatient = ({ patient, title }) => {
             >
                 <div className="flex flex-col">
                     <div className="w-full py-2 flex justify-center">
-                        <FormControl variant="outlined" size="small" className="w-[82%]">
-                            <InputLabel id="specialization-label">Specialization</InputLabel>
-                            <Select
-                                labelId="specialization-label"
-                                id="specialization-select"
-                                value={specialization}
-                                label="Specialization"
-                                size="small"
-                                variant="outlined"
-                                className="w-[100%]"
-                                onChange={(e) => setSpecialization(e.target.value)}
-                            >
-                                {specializations.map((spec) => (
-                                    <MenuItem key={spec} value={spec}>
-                                        {spec}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={clinics}
+                            size="small"
+                            freeSolo
+                            className="w-[82%]"
+                            value={clinic}
+                            onChange={clinicOnChange}
+                            renderInput={(params) => (
+                                <TextField {...params} label="Select Clinic" />
+                            )}
+                        />
+                    </div>
+                    <div className="w-full py-2 flex justify-center">
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={sortedSpecs}
+                            size="small"
+                            freeSolo
+                            className="w-[82%]"
+                            value={specialization}
+                            onChange={specOnChange}
+                            renderInput={(params) => (
+                                <TextField {...params} label="Select Specialization" />
+                            )}
+                        />
                     </div>
                     {
                         specialization ?
                         <div className="w-full py-2 flex justify-center">
-                            <FormControl variant="outlined" size="small" className="w-[82%]">
-                                <InputLabel id="doctor-label">Select Doctor</InputLabel>
-                                <Select
-                                    labelId="doctor-label"
-                                    id="doctor-select"
-                                    value={doctor}
-                                    label="Select Doctor"
-                                    size="small"
-                                    variant="outlined"
-                                    className="w-[100%]"
-                                    onChange={(e) => setDoctor(e.target.value)}
-                                >
-                                    {doctors.map((spec) => (
-                                        <MenuItem key={spec.id} value={`${spec.firstName} ${spec.lastName}`}>
-                                            {`${spec.firstName} ${spec.lastName}`}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
+                            <Autocomplete
+                                id="combo-box-demo"
+                                options={sortedDoctors}
+                                size="small"
+                                freeSolo
+                                className="w-[82%]"
+                                value={doctor}
+                                onChange={doctorOnChange}
+                                renderInput={(params) => (
+                                    <TextField {...params} label="Select Doctor" />
+                                )}
+                            />
                         </div> : null
                     }
                     <div className="w-full py-2 pt-3 flex justify-center">
