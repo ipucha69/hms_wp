@@ -7,9 +7,12 @@ import { Space, Input, Table} from "antd";
 // import { useNavigate } from "react-router-dom";
 // import { Queue } from "@mui/icons-material";
 
-import { selectPatients, addPatients, addFilteredPatients, selectFilteredPatients } from "../../../reducers/patientSlice";
+import { selectPatients, addPatients, addFilteredPatients, selectFilteredPatients, addPatientDetails } from "../../../reducers/patientSlice";
 
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
+import { Settings } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 
 
 const { Search } = Input;
@@ -68,8 +71,36 @@ const columns = [
         dataIndex: "created_at",
         key: "created_at",
         render: (_, record) => <p>{moment(record.created_at.toDate()).format("YYYY-MM-DD HH:mm:ss")}</p>
-    }
+    },
+    {
+        title: "Actions",
+        key: "action",
+        render: (_, patient) => (
+            <div className="flex flex-row gap-1 justify-start">
+                <ViewPatient patient={patient} />
+            </div>
+        ),
+    },
 ];
+
+
+const ViewPatient = ({ patient }) => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+  
+    const handleViewPatient = () => {
+      dispatch(addPatientDetails(patient));
+      navigate(`/patients/opd/${patient?.patientID}`);
+    };
+  
+    return (
+      <p className="mt-1">
+        <IconButton onClick={() => handleViewPatient()}>
+          <Settings className="text-[#0A365C] text-xl cursor-pointer" />
+        </IconButton>
+      </p>
+    );
+};
 
 const ConsultationQueue = () => {
   const dispatch = useDispatch();

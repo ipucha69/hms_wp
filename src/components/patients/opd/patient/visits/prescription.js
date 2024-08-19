@@ -1,8 +1,8 @@
 import React from 'react';
-import GetDiagnosis from '../prescrptionComponents/GetDiagnosis';
-import GetMedicines from '../prescrptionComponents/GetMedicines';
+import GetDiagnosis from '../../../subComponents/prescrptionComponents/GetDiagnosis';
+import GetMedicines from '../../../subComponents/prescrptionComponents/GetMedicines';
+import SelectMedicines from '../../../subComponents/prescrptionComponents/SelectMedicines';
 import Grid from '@mui/material/Grid';
-import SelectMedicines from '../prescrptionComponents/SelectMedicines';
 
 const Prescription = () => {
     return (

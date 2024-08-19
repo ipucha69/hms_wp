@@ -4,21 +4,19 @@ import { Tabs, Tab, Box, Grid, TextField} from '@mui/material';
 // import { Verified } from '@mui/icons-material';
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-// import { doc, getDoc } from "firebase/firestore";
-// import { db } from "../../../App";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../../../App";
 
-import Consumables from "./../opd/patient/visits/Consumables";
-import Documents from "./../opd/patient/visits/Documents";
-import HealthDetails from "./../opd/patient/visits/HealthDetails";
-import LabTest from "./../opd/patient/visits/LabTest";
-import OtherCharges from "./../opd/patient/visits/OtherCharges";
-import Prescription from "./../opd/patient/visits/prescription";
-// import PreviousHistory from "./visits/PreviousHistory";
-import Procedures from "./../opd/patient/visits/Procedures";
+import Consumables from "./visits/Consumables";
+import Documents from "./visits/Documents";
+import HealthDetails from "./visits/HealthDetails";
+import LabTest from "./visits/LabTest";
+import OtherCharges from "./visits/OtherCharges";
+import Prescription from "./visits/prescription";
+import PreviousHistory from "./visits/PreviousHistory";
+import Procedures from "./visits/Procedures";
 
-import { addPatientDetails, selectPatientDetails } from "../../../reducers/patientSlice";
-import PreviousDayHistory from "./../opd/patient/visits/PreviousDayHistory";
-import AllocateRoom from "./../opd/patient/visits/AllocateRoom";
+import { addPatientDetails, selectPatientDetails } from "../../../../reducers/patientSlice";
 
 
 function TabPanel(props) {
@@ -56,7 +54,7 @@ function TabPanel(props) {
   
   const primary = "#0A365C";
 
-const IPDVisitPatient = () => {
+const OPDPatient = () => {
 
     const [pageLoading, setPageLoading] = useState(false);
     const [value, setValue] = useState(0);
@@ -66,30 +64,25 @@ const IPDVisitPatient = () => {
 
     useEffect(() => {
         setPageLoading(true);
-        // const getPatientDetails = async () => {
-        //   setPageLoading(true);
-        //   const docRef = doc(db, "patientBucket", patientID);
-        //   const docSnap = await getDoc(docRef);
+        const getPatientDetails = async () => {
+          setPageLoading(true);
+          const docRef = doc(db, "patientsBucket", patientID);
+          const docSnap = await getDoc(docRef);
     
-        //   if (docSnap.exists()) {
-        //     const data = docSnap.data();
-        //     dispatch(addPatientDetails(data));
-        //     setPageLoading(false);
-        //   } else {
-        //     // docSnap.data() will be undefined in this case
-        //     console.log("No such document!");
-        //     dispatch(addPatientDetails(
-        //         { firstName: 'Rachel', middleName: 'Joseph', lastName: 'Hezron', email: 'hezronrachel100@gmail.com', age: 25, patientID: 'cc2', phone: '0788858654', gender: 'F', address: 'Kinondoni-Dar-es-Salaam', bloodGroup: 'O'}
-        //     ));
-        //     setPageLoading(false);
-        //   }
-        // };
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            dispatch(addPatientDetails(data));
+            setPageLoading(false);
+          } else {
+            // docSnap.data() will be undefined in this case
+            console.log("No such document!");
+            dispatch(addPatientDetails({}));
+            setPageLoading(false);
+          }
+        };
 
-        // getPatientDetails();
-        dispatch(addPatientDetails(
-          { firstName: 'Rachel', middleName: 'Joseph', regDate: '02/01/2023', lastName: 'Hezron', email: 'hezronrachel100@gmail.com', age: 25, patientID: 'cc2', phone: '0788858654', gender: 'F', address: 'Kinondoni-Dar-es-Salaam', bloodGroup: 'O', doctor: {id: '1', name: 'Mr Ipucha', specialization: 'Neurology'}}
-        ));
-        setPageLoading(false);
+        getPatientDetails();
+
     }, [dispatch, patientID])
 
     
@@ -205,50 +198,45 @@ const IPDVisitPatient = () => {
                     indicatorColor="primary"
                     sx={{ color: "#0A365C" }}
                 >
-                    <Tab label="PREVIOUS DAY HISTORY" {...a11yProps(0)} />
-                    <Tab label="ALLOCATE ROOM" {...a11yProps(1)} />
-                    <Tab label="HEALTH DETAILS" {...a11yProps(2)} />
-                    <Tab label="DOCUMENTS" {...a11yProps(3)} />
-                    <Tab label="PRESCRIPTION" {...a11yProps(4)} />
-                    <Tab label="LAB TEST" {...a11yProps(5)} />
-                    <Tab label="PROCEDURES" {...a11yProps(6)} />
-                    <Tab label="CONSUMABLES" {...a11yProps(7)} />
-                    <Tab label="OTHER CHARGES" {...a11yProps(8)} />
+                    <Tab label="PREVIOUS HISTORY" {...a11yProps(0)} />
+                    <Tab label="HEALTH DETAILS" {...a11yProps(1)} />
+                    <Tab label="DOCUMENTS" {...a11yProps(2)} />
+                    <Tab label="PRESCRIPTION" {...a11yProps(3)} />
+                    <Tab label="LAB TEST" {...a11yProps(4)} />
+                    <Tab label="PROCEDURES" {...a11yProps(5)} />
+                    <Tab label="CONSUMABLES" {...a11yProps(6)} />
+                    <Tab label="OTHER CHARGES" {...a11yProps(7)} />
                 </Tabs>
               </Box>
                 <TabPanel value={value} index={0}>
-                  <PreviousDayHistory />
+                  <PreviousHistory />
                 </TabPanel>
 
                 <TabPanel value={value} index={1}>
-                  <AllocateRoom />
-                </TabPanel>
-
-                <TabPanel value={value} index={2}>
                   <HealthDetails />
                 </TabPanel>
 
-                <TabPanel value={value} index={3}>
+                <TabPanel value={value} index={2}>
                   <Documents />
                 </TabPanel>
 
-                <TabPanel value={value} index={4}>
+                <TabPanel value={value} index={3}>
                   <Prescription />
                 </TabPanel>
                 
-                <TabPanel value={value} index={5}>
+                <TabPanel value={value} index={4}>
                   <LabTest />
                 </TabPanel>
 
-                <TabPanel value={value} index={6}>
+                <TabPanel value={value} index={5}>
                   <Procedures />
                 </TabPanel>
 
-                <TabPanel value={value} index={7}>
+                <TabPanel value={value} index={6}>
                   <Consumables />
                 </TabPanel>
 
-                <TabPanel value={value} index={8}>
+                <TabPanel value={value} index={7}>
                   <OtherCharges />
                 </TabPanel>
             </div>
@@ -274,4 +262,4 @@ const IPDVisitPatient = () => {
       );
 }
 
-export default IPDVisitPatient
+export default OPDPatient
