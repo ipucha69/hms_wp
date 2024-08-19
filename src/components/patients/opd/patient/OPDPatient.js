@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Tabs, Tab, Box, Grid, TextField} from '@mui/material';
+import { Tabs, Tab, Box, Grid, Chip, Divider} from '@mui/material';
 // import { Verified } from '@mui/icons-material';
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -17,6 +17,7 @@ import PreviousHistory from "./visits/PreviousHistory";
 import Procedures from "./visits/Procedures";
 
 import { addPatientDetails, selectPatientDetails } from "../../../../reducers/patientSlice";
+import moment from "moment";
 
 
 function TabPanel(props) {
@@ -96,90 +97,35 @@ const OPDPatient = () => {
     const renderUserTabs = () => {
         return (
             <div>
-              <div className="flex flex-row gap-8 justify-end items-end py-2 px-2">
-                <div className="w-full py-2 flex justify-center">
-                    <TextField
-                        size="small"
-                        id="outlined-patientID"
-                        label="Patient ID"
-                        variant="outlined"
-                        // className="w-[60%]"
-                        value={patient?.patientID}
-                    />
-                </div>
-                <div className="w-full py-2 flex justify-center">
-                    <TextField
-                        size="small"
-                        id="outlined-name"
-                        label="Patient Name"
-                        variant="outlined"
-                        // className="w-[60%]"
-                        value={`${patient?.firstName} ${patient?.lastName}`}
-                    />
-                </div>
-                <div className="w-full py-2 flex justify-center">
-                    <TextField
-                        size="small"
-                        id="outlined-regDate"
-                        label="Reg Date"
-                        variant="outlined"
-                        // className="w-[60%]"
-                        value={patient?.regDate}
-                    />
-                </div>
-                <div className="w-full py-2 flex justify-center">
-                    <TextField
-                        size="small"
-                        id="outlined-gender"
-                        label="Gender"
-                        variant="outlined"
-                        // className="w-[60%]"
-                        value={patient?.gender === 'M' ? 'Male' : 'Female'}
-                    />
-                </div>
-                <div className="w-full py-2 flex justify-center">
-                    <TextField
-                        size="small"
-                        id="outlined-age"
-                        label="Age"
-                        variant="outlined"
-                        // className="w-[60%]"
-                        value={patient?.age}
-                    />
-                </div>
+              <div className="my-4">
+                <Divider>
+                  <Chip
+                    label={`Patient ID: ${patient?.patientID}`}
+                  />{" "}
+                  <Chip
+                    label={`Patient Name: ${patient?.firstName} ${patient?.lastName}`}
+                  />{" "}
+                  <Chip
+                    label={`Created AT: ${moment(patient?.created_at.toDate()).format("YYYY-MM-DD HH:mm:ss")}`}
+                  />{" "}
+                  <Chip
+                    label={`Gender: ${patient?.gender}`}
+                  />{" "}
+                  <Chip
+                    label={`Age: ${patient?.age}`}
+                  />{" "}
+                  <Chip
+                    label={`Doctor Name: ${patient?.doctorName ? patient?.doctorName : "-"}`}
+                  />{" "}
+                  <Chip
+                    label={`Specialization: ${patient?.specialization ? patient?.specialization : "-"}`}
+                  />{" "}
+                  <Chip
+                    label={`Blood Group: ${patient?.bloodGroup ? patient?.bloodGroup : "-"}`}
+                  />{" "}
+                </Divider>
               </div>
-              <div className="flex flex-row gap-8 justify-end items-end py-2 px-2">
-                <div className="w-full py-2 flex justify-center">
-                    <TextField
-                        size="small"
-                        id="outlined-doctorName"
-                        label="Doctor Name"
-                        variant="outlined"
-                        // className="w-[60%]"
-                        value={patient?.doctor?.name}
-                    />
-                </div>
-                <div className="w-full py-2 flex justify-center">
-                    <TextField
-                        size="small"
-                        id="outlined-specialization"
-                        label="Specialization"
-                        variant="outlined"
-                        // className="w-[60%]"
-                        value={patient?.doctor?.specialization}
-                    />
-                </div>
-                <div className="w-full py-2 flex justify-center">
-                    <TextField
-                        size="small"
-                        id="outlined-bloodGroup"
-                        label="Blood Group"
-                        variant="outlined"
-                        // className="w-[60%]"
-                        value={patient?.bloodGroup}
-                    />
-                </div>
-              </div>
+
               <Box
                 sx={{
                     width: "100%",
