@@ -18,6 +18,7 @@ import Procedures from "./visits/Procedures";
 
 import { addPatientDetails, selectPatientDetails } from "../../../../reducers/patientSlice";
 import moment from "moment";
+import AddPatientInfo from "./visits/AddPatientInfo";
 
 
 function TabPanel(props) {
@@ -147,11 +148,12 @@ const OPDPatient = () => {
                     <Tab label="PREVIOUS HISTORY" {...a11yProps(0)} />
                     <Tab label="HEALTH DETAILS" {...a11yProps(1)} />
                     <Tab label="DOCUMENTS" {...a11yProps(2)} />
-                    <Tab label="PRESCRIPTION" {...a11yProps(3)} />
-                    <Tab label="LAB TEST" {...a11yProps(4)} />
-                    <Tab label="PROCEDURES" {...a11yProps(5)} />
-                    <Tab label="CONSUMABLES" {...a11yProps(6)} />
-                    <Tab label="OTHER CHARGES" {...a11yProps(7)} />
+                    <Tab label="CLERK SHEET" {...a11yProps(3)} />
+                    <Tab label="PRESCRIPTION" {...a11yProps(4)} />
+                    <Tab label="LAB TEST" {...a11yProps(5)} />
+                    <Tab label="PROCEDURES" {...a11yProps(6)} />
+                    <Tab label="CONSUMABLES" {...a11yProps(7)} />
+                    <Tab label="OTHER CHARGES" {...a11yProps(8)} />
                 </Tabs>
               </Box>
                 <TabPanel value={value} index={0}>
@@ -167,22 +169,26 @@ const OPDPatient = () => {
                 </TabPanel>
 
                 <TabPanel value={value} index={3}>
+                  <AddPatientInfo />
+                </TabPanel>
+
+                <TabPanel value={value} index={4}>
                   <Prescription />
                 </TabPanel>
                 
-                <TabPanel value={value} index={4}>
+                <TabPanel value={value} index={5}>
                   <LabTest />
                 </TabPanel>
 
-                <TabPanel value={value} index={5}>
+                <TabPanel value={value} index={6}>
                   <Procedures />
                 </TabPanel>
 
-                <TabPanel value={value} index={6}>
+                <TabPanel value={value} index={7}>
                   <Consumables />
                 </TabPanel>
 
-                <TabPanel value={value} index={7}>
+                <TabPanel value={value} index={8}>
                   <OtherCharges />
                 </TabPanel>
             </div>
