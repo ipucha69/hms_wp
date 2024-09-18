@@ -57,7 +57,7 @@ function TabPanel(props) {
   
   const primary = "#0A365C";
 
-const OPDPatient = () => {
+const IPDPatient = () => {
 
     const [pageLoading, setPageLoading] = useState(false);
     const [value, setValue] = useState(0);
@@ -147,14 +147,14 @@ const OPDPatient = () => {
                     sx={{ color: "#0A365C" }}
                 >
                     <Tab label="PREVIOUS HISTORY" {...a11yProps(0)} />
-                    <Tab label="HEALTH DETAILS" {...a11yProps(1)} />
-                    <Tab label="DOCUMENTS" {...a11yProps(2)} />
+                    <Tab label="VITAL SIGNS" {...a11yProps(1)} />
+                    <Tab label="CONTINUATION NOTES" {...a11yProps(2)} />
                     <Tab label="CLERK SHEET" {...a11yProps(3)} />
-                    <Tab label="PRESCRIPTION" {...a11yProps(4)} />
-                    <Tab label="LAB TEST" {...a11yProps(5)} />
-                    <Tab label="PROCEDURES" {...a11yProps(6)} />
-                    <Tab label="CONSUMABLES" {...a11yProps(7)} />
-                    <Tab label="OTHER CHARGES" {...a11yProps(8)} />
+                    <Tab label="DIAGNOSIS" {...a11yProps(4)} />
+                    <Tab label="INVESTIAGATIONS" {...a11yProps(5)} />
+                    <Tab label="RESULTS" {...a11yProps(6)} />
+                    <Tab label="TREATMENTS" {...a11yProps(7)} />
+                    <Tab label="BLOOD REQUEST" {...a11yProps(8)} />
                     <Tab label="DISPOSITION" {...a11yProps(9)} />
                 </Tabs>
               </Box>
@@ -220,4 +220,4 @@ const OPDPatient = () => {
       );
 }
 
-export default OPDPatient
+export default IPDPatient

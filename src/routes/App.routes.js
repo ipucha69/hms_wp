@@ -25,6 +25,9 @@ import PatientModules from "../components/patients/PatientModules";
 import Reception from "../components/patients/reception/Reception";
 import OutPatient from "../components/patients/opd/OutPatient";
 import OPDPatient from "../components/patients/opd/patient/OPDPatient";
+// import InPatient from "../components/patients/ipd/InPatient";
+import IPDList from "../components/patients/ipd/IPDList";
+import IPDPatient from "../components/patients/ipd/patient/IPDPatient";
 
 const LoginElement = () => <Login />;
 
@@ -68,6 +71,19 @@ const OPDPatientElement = () => (
 const PatientQueueElement = () => (
     <AppLayout>
         <PatientQueue />
+    </AppLayout>
+)
+
+const IPDElement = () => (
+    <AppLayout>
+        {/* <InPatient /> */}
+        <IPDList />
+    </AppLayout>
+)
+
+const IPDPatientElement = () => (
+    <AppLayout>
+        <IPDPatient />
     </AppLayout>
 )
 
@@ -189,6 +205,9 @@ const App = () => {
                     <Route path="/patients/reception" element={<ReceptionElement />} />
                     <Route path="/patients/opd" element={<OPDElement />} />
                     <Route path="/patients/opd/:patientID" element={<OPDPatientElement />} />
+
+                    <Route path="/patients/ipd" element={<IPDElement />} />
+                    <Route path="/patients/ipd/:patientID" element={<IPDPatientElement />} />
 
                     <Route path="/patients-queue" element={<PatientQueueElement />} />
                     <Route path="/patients-queue/:patientID" element={<PatientQueueVisitElement />} />

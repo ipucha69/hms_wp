@@ -1,4 +1,4 @@
-import { PersonAdd, PersonOff, PersonPinSharp } from '@mui/icons-material'
+import { BedOutlined, PersonAdd, PersonOff } from '@mui/icons-material'
 import { Box, Card, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
@@ -31,6 +31,10 @@ const PatientModules = () => {
         navigate("/patients/opd");
     };
 
+    const handleIPD = () => {
+        navigate("/patients/ipd");
+    };
+
     return (
         <div className="relative">
             {pageLoading ? (
@@ -53,7 +57,7 @@ const PatientModules = () => {
                         </Box>
                     </Card>
                 </Box>
-                <Box sx={{ display: 'flex', width: '20%', flexDirection: 'column',"&:hover": {background: `${colors.bgColor6}`,cursor: 'pointer',},}}>
+                <Box sx={{ display: 'flex', width: '20%', flexDirection: 'column',"&:hover": {background: `${colors.bgColor6}`,cursor: 'pointer',},}} onClick={() => handleIPD()}>
                     <Card variant="outlined" sx={{ borderRadius: 1, backgroundColor: colors.primary, padding: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box sx={{ flexGrow: 1, marginLeft: 2 }}>
                             <Typography variant="body2" gutterBottom sx={{ color: '#fff' }}>
@@ -61,7 +65,7 @@ const PatientModules = () => {
                             </Typography>
                         </Box>
                         <Box sx={{ alignSelf: 'center' }}>
-                            <PersonPinSharp className="mt-2 py-0.5" sx={{ color: '#fff' }}/>
+                            <BedOutlined className="mt-2 py-0.5" sx={{ color: '#fff' }}/>
                         </Box>
                     </Card>
                 </Box>

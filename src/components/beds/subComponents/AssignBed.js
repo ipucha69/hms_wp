@@ -45,10 +45,7 @@ const AssignBed = () => {
                 dispatch(addPatients(patientsArray));
                 setPageLoading(false);
             } else {
-                dispatch(addPatients([
-                    { firstName: 'Rashid', middleName: 'Seif', lastName: 'Iddi', email: 'ipucha69@gmail.com', age: 28, patientID: 'cc1', phone: '0679329802', gender: 'M', address: 'Kawe-Dar-es-Salaam', bloodGroup: 'A+'},
-                    { firstName: 'Rachel', middleName: 'Joseph', lastName: 'Hezron', email: 'hezronrachel100@gmail.com', age: 25, patientID: 'cc2', phone: '0788858654', gender: 'F', address: 'Kinondoni-Dar-es-Salaam', bloodGroup: 'O'}
-                ]));
+                dispatch(addPatients([]));
                 setPageLoading(false);
             }
         };
